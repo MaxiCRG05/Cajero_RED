@@ -18,6 +18,9 @@
 
     <Separator/>
 
+    <Button fx:id="homeButton" text="Inicio" onAction="#handleHome"
+            style="-fx-background-color: transparent; -fx-text-fill: #5c5f61; -fx-background-radius: 12; -fx-padding: 12;"
+            maxWidth="Infinity"/>
     <Button fx:id="withdrawButton" text="Retirar" onAction="#handleWithdraw"
             style="-fx-background-color: transparent; -fx-text-fill: #5c5f61; -fx-background-radius: 12; -fx-padding: 12;"
             maxWidth="Infinity"/>
@@ -27,9 +30,15 @@
     <Button fx:id="balanceButton" text="Consultar Saldo" onAction="#handleBalance"
             style="-fx-background-color: transparent; -fx-text-fill: #5c5f61; -fx-background-radius: 12; -fx-padding: 12;"
             maxWidth="Infinity"/>
+    <Button fx:id="transferButton" text="Transferir" onAction="#handleTransfer"
+            style="-fx-background-color: transparent; -fx-text-fill: #5c5f61; -fx-background-radius: 12; -fx-padding: 12;"
+            maxWidth="Infinity"/>
 
     <Region VBox.vgrow="ALWAYS"/>
 
+    <Button fx:id="logoutButton" text="Cerrar Sesión" onAction="#handleLogout"
+            style="-fx-background-color: transparent; -fx-text-fill: #ba1a1a; -fx-background-radius: 12; -fx-padding: 12; -fx-border-color: #ba1a1a; -fx-border-radius: 12;"
+            maxWidth="Infinity"/>
     <Button fx:id="emergencyButton" text="Asistencia de Emergencia" onAction="#handleEmergency"
             style="-fx-background-color: #ba1a1a; -fx-text-fill: white; -fx-background-radius: 30; -fx-padding: 12;"
             maxWidth="Infinity"/>

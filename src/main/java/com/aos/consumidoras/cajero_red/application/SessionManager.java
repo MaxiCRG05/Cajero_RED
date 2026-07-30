@@ -7,7 +7,8 @@ public class SessionManager
     private static final SessionManager instance = new SessionManager();
     private String token;
     private Integer usuarioId;
-    private String usuarioNombre = "Juan Pérez";
+    private String usuarioNombre;
+    private String clabe;
 
     private SessionManager() { }
 
@@ -46,9 +47,18 @@ public class SessionManager
         this.usuarioNombre = usuarioNombre;
     }
 
+    public String getClabe() {
+        return clabe;
+    }
+
+    public void setClabe(String clabe) {
+        this.clabe = clabe;
+    }
+
     public void setTokenResponse(TokenResponse response)
     {
         this.token = response.getToken();
         this.usuarioId = response.getUsuarioId();
+        this.clabe = response.getClabe();
     }
 }

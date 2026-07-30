@@ -9,4 +9,5 @@ public class TokenResponse
     private String refreshToken;
     private int expiraEn;
     private int usuarioId;
+    private String clabe;
 }

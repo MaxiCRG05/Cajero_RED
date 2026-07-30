@@ -1,41 +1,69 @@
 package com.aos.consumidoras.cajero_red.infrastructure.adapter.in.fx;
 
+import com.aos.consumidoras.cajero_red.application.SceneManager;
 import com.aos.consumidoras.cajero_red.application.SessionManager;
 import com.aos.consumidoras.cajero_red.domain.model.dto.Monto;
+import com.aos.consumidoras.cajero_red.domain.model.dto.SaldoResponse;
 import com.aos.consumidoras.cajero_red.domain.model.dto.TransaccionResponse;
+import com.aos.consumidoras.cajero_red.domain.ports.in.usecases.ConsultarSaldoUseCase;
 import com.aos.consumidoras.cajero_red.domain.ports.in.usecases.RealizarRetiroUseCase;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 
 @Component
 public class WithdrawController
 {
-    @FXML
-    private TextField amountField;
-    @FXML
-    private Button cancelButton;
-    @FXML
-    public Button confirmButton;
+    @FXML private TextField amountField;
+    @FXML private Button cancelButton;
+    @FXML private Button confirmButton;
+    @FXML private Text saldoLabel;
+    @FXML private SideNavBarController sideNavController;
 
     @Autowired
     private RealizarRetiroUseCase retiroService;
 
     @Autowired
-    private ApplicationContext springContext;
+    private ConsultarSaldoUseCase consultarSaldo;
+
+    @Autowired
+    private SceneManager sceneManager;
 
     @FXML
     public void initialize()
     {
         amountField.setText("0");
+        cargarSaldo();
+        sideNavController.setActiveButtonById("withdrawButton");
+    }
+
+    private void cargarSaldo()
+    {
+        try
+        {
+            String token = SessionManager.getInstance().getToken();
+            Integer usuarioId = SessionManager.getInstance().getUsuarioId();
+            if (token != null && !token.isEmpty() && usuarioId != null)
+            {
+                Long cuentaId = usuarioId.longValue();
+                SaldoResponse saldo = consultarSaldo.consultarSaldo(cuentaId, token);
+                saldoLabel.setText("$" + saldo.getSaldo() + " " + saldo.getMoneda());
+            }
+            else
+            {
+                saldoLabel.setText("Saldo no disponible");
+            }
+        }
+        catch (Exception e)
+        {
+            saldoLabel.setText("Error al cargar saldo");
+        }
     }
 
     @FXML private void pressKey1() { addDigit("1"); }
@@ -76,13 +104,9 @@ public class WithdrawController
     {
         String current = amountField.getText();
         if (current.equals("0"))
-        {
             amountField.setText(digit);
-        }
         else
-        {
             amountField.setText(current + digit);
-        }
     }
 
     @FXML
@@ -104,7 +128,13 @@ public class WithdrawController
             }
 
             String token = SessionManager.getInstance().getToken();
-            Long cuentaId = 1L;
+            Integer usuarioId = SessionManager.getInstance().getUsuarioId();
+            if (usuarioId == null)
+            {
+                showAlert("Error", "Usuario no autenticado.");
+                return;
+            }
+            Long cuentaId = usuarioId.longValue();
 
             TransaccionResponse response = retiroService.retirar(
                     cuentaId,
@@ -125,20 +155,8 @@ public class WithdrawController
 
     private void goToMainMenu()
     {
-        try
-        {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/screens/Main.fxml"));
-            loader.setControllerFactory(springContext::getBean);
-            Scene scene = new Scene(loader.load(), 800, 600);
-            scene.getStylesheets().add(getClass().getResource("/views/styles.css").toExternalForm());
-            Stage stage = (Stage) cancelButton.getScene().getWindow();
-            stage.setScene(scene);
-            stage.setTitle("Cajero RED - Menú");
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
+        sceneManager.cambiarEscena(stage, "/views/screens/Main.fxml");
     }
 
     private void showAlert(String title, String message)

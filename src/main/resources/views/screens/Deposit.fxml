@@ -15,17 +15,14 @@
     </top>
 
     <left>
-        <fx:include source="../common/SideNavBar.fxml"/>
+        <fx:include source="../common/SideNavBar.fxml" fx:id="sideNav"/>
     </left>
 
     <center>
         <VBox spacing="20" alignment="CENTER" style="-fx-padding: 20 40; -fx-max-width: 600;">
             <Text text="Depósito de Efectivo" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-fill: #001c3e;"/>
 
-            <VBox spacing="5" alignment="CENTER_LEFT" style="-fx-pref-width: 100%;">
-                <Text text="CLABE destino" style="-fx-fill: #5c5f61;"/>
-                <TextField fx:id="clabeField" promptText="876543210987654321" style="-fx-background-color: white; -fx-border-color: #c3c6d0; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 12; -fx-pref-width: 100%;"/>
-            </VBox>
+            <Text text="Ingrese el monto a depositar" style="-fx-fill: #5c5f61; -fx-font-size: 14;"/>
 
             <VBox spacing="5" alignment="CENTER_LEFT" style="-fx-pref-width: 100%;">
                 <Text text="Monto a Depositar" style="-fx-fill: #5c5f61;"/>

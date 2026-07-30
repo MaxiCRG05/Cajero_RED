@@ -15,7 +15,7 @@
     </top>
 
     <left>
-        <fx:include source="../common/SideNavBar.fxml"/>
+        <fx:include source="../common/SideNavBar.fxml" fx:id="sideNav"/>
     </left>
 
     <center>
@@ -34,10 +34,10 @@
             </VBox>
 
             <HBox spacing="10">
-                <Button text="$100" onAction="#setAmount100" style="-fx-background-color: white; -fx-border-color: #c3c6d0; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 12 24;"/>
-                <Button text="$200" onAction="#setAmount200" style="-fx-background-color: white; -fx-border-color: #c3c6d0; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 12 24;"/>
-                <Button text="$500" onAction="#setAmount500" style="-fx-background-color: #0b315e; -fx-text-fill: white; -fx-border-color: #0b315e; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 12 24;"/>
-                <Button text="$1000" onAction="#setAmount1000" style="-fx-background-color: white; -fx-border-color: #c3c6d0; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 12 24;"/>
+                <Button text="\$100" onAction="#setAmount100" style="-fx-background-color: white; -fx-border-color: #c3c6d0; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 12 24;"/>
+                <Button text="\$200" onAction="#setAmount200" style="-fx-background-color: white; -fx-border-color: #c3c6d0; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 12 24;"/>
+                <Button text="\$500" onAction="#setAmount500" style="-fx-background-color: #0b315e; -fx-text-fill: white; -fx-border-color: #0b315e; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 12 24;"/>
+                <Button text="\$1000" onAction="#setAmount1000" style="-fx-background-color: white; -fx-border-color: #c3c6d0; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 12 24;"/>
             </HBox>
 
             <GridPane hgap="10" vgap="10" alignment="CENTER">

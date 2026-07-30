@@ -24,8 +24,19 @@ public class SceneManager
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             loader.setControllerFactory(springContext::getBean);
             Parent root = loader.load();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
+
+            Scene scene = stage.getScene();
+
+            if (scene == null)
+            {
+                scene = new Scene(root);
+                stage.setScene(scene);
+            }
+            else
+            {
+                scene.setRoot(root);
+            }
+
             stage.setFullScreen(true);
             stage.show();
         }

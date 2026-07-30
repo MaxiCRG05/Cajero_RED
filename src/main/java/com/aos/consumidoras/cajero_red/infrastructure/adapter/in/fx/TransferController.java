@@ -1,18 +1,16 @@
 package com.aos.consumidoras.cajero_red.infrastructure.adapter.in.fx;
 
+import com.aos.consumidoras.cajero_red.application.SceneManager;
 import com.aos.consumidoras.cajero_red.application.SessionManager;
 import com.aos.consumidoras.cajero_red.domain.model.dto.Monto;
 import com.aos.consumidoras.cajero_red.domain.model.dto.TransferenciaResponse;
 import com.aos.consumidoras.cajero_red.domain.ports.in.usecases.RealizarTransferenciaUseCase;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 
@@ -25,17 +23,19 @@ public class TransferController
     @FXML private TextField conceptoField;
     @FXML private Button cancelButton;
     @FXML private Button confirmButton;
+    @FXML private SideNavBarController sideNavController;
 
     @Autowired
     private RealizarTransferenciaUseCase transferenciaService;
 
     @Autowired
-    private ApplicationContext springContext;
+    private SceneManager sceneManager;
 
     @FXML
     public void initialize()
     {
         amountField.setText("0");
+        sideNavController.setActiveButtonById("transferButton");
     }
 
     @FXML
@@ -64,7 +64,13 @@ public class TransferController
             }
 
             String token = SessionManager.getInstance().getToken();
-            Long cuentaOrigenId = 1L;
+            Integer usuarioId = SessionManager.getInstance().getUsuarioId();
+            if (usuarioId == null)
+            {
+                showAlert("Error", "Usuario no autenticado.");
+                return;
+            }
+            Long cuentaOrigenId = usuarioId.longValue();
 
             TransferenciaResponse response = transferenciaService.transferir(
                     cuentaOrigenId,
@@ -88,20 +94,8 @@ public class TransferController
 
     private void goToMainMenu()
     {
-        try
-        {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/screens/Main.fxml"));
-            loader.setControllerFactory(springContext::getBean);
-            Scene scene = new Scene(loader.load(), 800, 600);
-            scene.getStylesheets().add(getClass().getResource("/views/styles.css").toExternalForm());
-            Stage stage = (Stage) cancelButton.getScene().getWindow();
-            stage.setScene(scene);
-            stage.setTitle("Cajero RED - Menú");
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
+        sceneManager.cambiarEscena(stage, "/views/screens/Main.fxml");
     }
 
     private void showAlert(String title, String message)

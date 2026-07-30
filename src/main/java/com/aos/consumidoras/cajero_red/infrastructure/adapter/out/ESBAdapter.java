@@ -7,12 +7,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 public class ESBAdapter implements ESBPort
@@ -29,21 +30,67 @@ public class ESBAdapter implements ESBPort
     }
 
     @Override
+    public UsuarioDTO obtenerUsuario(Integer usuarioId, String token)
+    {
+        ESBRequest request = buildRequest("CONSULTA_USUARIO", token, null);
+        ESBResponse response = execute(request, token);
+        if (!response.getBody().isExito())
+            throw new RuntimeException(response.getBody().getMensaje());
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.convertValue(response.getBody().getDatos(), UsuarioDTO.class);
+    }
+
+    @Override
     public SaldoResponse consultarSaldo(Long cuentaId, String token)
     {
         ESBRequest request = buildRequest("CONSULTA", token,
                 Map.of("tipoConsulta", "SALDO_CUENTA", "parametros", Map.of("cuentaId", cuentaId)));
         ESBResponse response = execute(request, token);
         if (!response.getBody().isExito())
-        {
             throw new RuntimeException(response.getBody().getMensaje());
-        }
         Map<String, Object> datos = (Map<String, Object>) response.getBody().getDatos();
         return new SaldoResponse(
                 ((Number) datos.get("CuentaId")).longValue(),
                 new java.math.BigDecimal(datos.get("Saldo").toString()),
                 datos.get("Moneda").toString()
         );
+    }
+
+    @Override
+    public List<MovimientoDTO> consultarMovimientos(Long cuentaId, String token)
+    {
+        ESBRequest request = buildRequest("CONSULTA", token,
+                Map.of("tipoConsulta", "MOVIMIENTOS", "parametros", Map.of("cuentaId", cuentaId)));
+        ESBResponse response = execute(request, token);
+        if (!response.getBody().isExito())
+            throw new RuntimeException(response.getBody().getMensaje());
+
+        List<MovimientoDTO> movimientos = new ArrayList<>();
+        Map<String, Object> datos = (Map<String, Object>) response.getBody().getDatos();
+        if (datos.containsKey("movimientos")) {
+            List<Map<String, Object>> lista = (List<Map<String, Object>>) datos.get("movimientos");
+            DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+            for (Map<String, Object> item : lista) {
+                MovimientoDTO dto = new MovimientoDTO();
+                dto.setMovimientoId(((Number) item.get("movimientoId")).longValue());
+                dto.setCuentaId(((Number) item.get("cuentaId")).longValue());
+                dto.setDescripcion((String) item.get("descripcion"));
+                dto.setMonto(new BigDecimal(item.get("monto").toString()));
+                dto.setMoneda((String) item.get("moneda"));
+                dto.setTipoMovimiento((String) item.get("tipoMovimiento"));
+
+                String fechaStr = (String) item.get("fecha");
+                LocalDateTime fecha = LocalDateTime.parse(fechaStr, formatter);
+                dto.setFecha(fecha);
+
+                if (item.containsKey("saldoPosterior") && item.get("saldoPosterior") != null) {
+                    dto.setSaldoPosterior(new BigDecimal(item.get("saldoPosterior").toString()));
+                }
+                movimientos.add(dto);
+            }
+        }
+        return movimientos;
     }
 
     @Override
@@ -59,9 +106,7 @@ public class ESBAdapter implements ESBPort
         ESBRequest request = buildRequest("DEPOSITO", token, body);
         ESBResponse response = execute(request, token);
         if (!response.getBody().isExito())
-        {
             throw new RuntimeException(response.getBody().getMensaje());
-        }
         Map<String, Object> datos = (Map<String, Object>) response.getBody().getDatos();
         TransaccionResponse trans = new TransaccionResponse();
         trans.setTransaccionId(((Number) datos.get("transaccionId")).longValue());
@@ -87,9 +132,7 @@ public class ESBAdapter implements ESBPort
         ESBRequest request = buildRequest("RETIRO", token, body);
         ESBResponse response = execute(request, token);
         if (!response.getBody().isExito())
-        {
             throw new RuntimeException(response.getBody().getMensaje());
-        }
         Map<String, Object> datos = (Map<String, Object>) response.getBody().getDatos();
         TransaccionResponse trans = new TransaccionResponse();
         trans.setTransaccionId(((Number) datos.get("transaccionId")).longValue());
@@ -114,9 +157,7 @@ public class ESBAdapter implements ESBPort
         ESBRequest request = buildRequest("TRANSFERENCIA", token, body);
         ESBResponse response = execute(request, token);
         if (!response.getBody().isExito())
-        {
             throw new RuntimeException(response.getBody().getMensaje());
-        }
         Map<String, Object> datos = (Map<String, Object>) response.getBody().getDatos();
         TransferenciaResponse transfer = new TransferenciaResponse();
         transfer.setTransferenciaId(((Number) datos.get("transferenciaId")).longValue());
@@ -132,20 +173,16 @@ public class ESBAdapter implements ESBPort
         transfer.setFecha(OffsetDateTime.parse(fechaStr));
         Map<String, Object> saldoOrigenNuevo = (Map<String, Object>) datos.get("saldoOrigenNuevo");
         if (saldoOrigenNuevo != null)
-        {
             transfer.setSaldoOrigenNuevo(new Monto(
                     new java.math.BigDecimal(saldoOrigenNuevo.get("cantidad").toString()),
                     (String) saldoOrigenNuevo.get("moneda")
             ));
-        }
         Map<String, Object> saldoDestinoNuevo = (Map<String, Object>) datos.get("saldoDestinoNuevo");
         if (saldoDestinoNuevo != null)
-        {
             transfer.setSaldoDestinoNuevo(new Monto(
                     new java.math.BigDecimal(saldoDestinoNuevo.get("cantidad").toString()),
                     (String) saldoDestinoNuevo.get("moneda")
             ));
-        }
         return transfer;
     }
 

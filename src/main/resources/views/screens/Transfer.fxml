@@ -15,7 +15,7 @@
     </top>
 
     <left>
-        <fx:include source="../common/SideNavBar.fxml"/>
+        <fx:include source="../common/SideNavBar.fxml" fx:id="sideNav"/>
     </left>
 
     <center>

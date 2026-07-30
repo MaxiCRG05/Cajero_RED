@@ -1,11 +1,10 @@
 package com.aos.consumidoras.cajero_red.infrastructure.adapter.in.fx;
 
+import com.aos.consumidoras.cajero_red.application.SceneManager;
 import com.aos.consumidoras.cajero_red.application.SessionManager;
 import com.aos.consumidoras.cajero_red.domain.model.dto.SaldoResponse;
 import com.aos.consumidoras.cajero_red.domain.ports.in.usecases.ConsultarSaldoUseCase;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.text.Text;
@@ -13,7 +12,6 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import java.time.LocalTime;
 
@@ -28,19 +26,18 @@ public class MainController
     @FXML private Button depositCard;
     @FXML private Button balanceCard;
     @FXML private Button transferCard;
-
     @FXML private Button withdrawButton;
     @FXML private Button depositButton;
     @FXML private Button balanceButton;
     @FXML private Button transferButton;
-
     @FXML private Button withdrawNoCardButton;
+    @FXML private SideNavBarController sideNavController;
 
     @Autowired
     private ConsultarSaldoUseCase consultarSaldo;
 
     @Autowired
-    private ApplicationContext springContext;
+    private SceneManager sceneManager;
 
     @FXML
     public void initialize()
@@ -68,6 +65,7 @@ public class MainController
         transferCard.setOnAction(e -> goToTransfer());
 
         cargarSaldo();
+        sideNavController.setActiveButtonById("homeButton");
     }
 
     private void cargarSaldo()
@@ -75,9 +73,10 @@ public class MainController
         try
         {
             String token = SessionManager.getInstance().getToken();
-            if (token != null && !token.isEmpty())
+            Integer usuarioId = SessionManager.getInstance().getUsuarioId();
+            if (token != null && !token.isEmpty() && usuarioId != null)
             {
-                Long cuentaId = 1L;
+                Long cuentaId = usuarioId.longValue();
                 SaldoResponse saldo = consultarSaldo.consultarSaldo(cuentaId, token);
                 if (saldoLabel != null)
                     saldoLabel.setText("Saldo: $" + saldo.getSaldo() + " " + saldo.getMoneda());
@@ -99,25 +98,25 @@ public class MainController
     @FXML
     public void goToWithdraw()
     {
-        navigateTo("/views/screens/Withdraw.fxml", "Retiro de Efectivo");
+        navegarA("/views/screens/Withdraw.fxml");
     }
 
     @FXML
     public void goToDeposit()
     {
-        navigateTo("/views/screens/Deposit.fxml", "Depósito");
+        navegarA("/views/screens/Deposit.fxml");
     }
 
     @FXML
     public void goToBalance()
     {
-        navigateTo("/views/screens/Balance.fxml", "Consulta de Saldo");
+        navegarA("/views/screens/Balance.fxml");
     }
 
     @FXML
     public void goToTransfer()
     {
-        navigateTo("/views/screens/Transfer.fxml", "Transferencia SPEI");
+        navegarA("/views/screens/Transfer.fxml");
     }
 
     @FXML
@@ -126,17 +125,12 @@ public class MainController
         logger.info("Navegando a Retiro sin Tarjeta...");
     }
 
-    private void navigateTo(String fxmlPath, String title)
+    private void navegarA(String fxmlPath)
     {
         try
         {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            loader.setControllerFactory(springContext::getBean);
-            Scene scene = new Scene(loader.load(), 800, 600);
-            scene.getStylesheets().add(getClass().getResource("/views/styles.css").toExternalForm());
             Stage stage = (Stage) withdrawCard.getScene().getWindow();
-            stage.setScene(scene);
-            stage.setTitle("Cajero RED - " + title);
+            sceneManager.cambiarEscena(stage, fxmlPath);
         }
         catch (Exception e)
         {
