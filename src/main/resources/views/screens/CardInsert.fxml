@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.aos.consumidoras.cajero_red.infrastructure.adapter.in.fx.CardInsertController"
+            style="-fx-background-color: #f8f9ff;">
+
+    <top>
+        <fx:include source="../common/TopAppBar.fxml"/>
+    </top>
+
+    <center>
+        <VBox spacing="30" alignment="CENTER" style="-fx-padding: 60;">
+            <Text text="Bienvenido" style="-fx-font-size: 48; -fx-font-weight: bold; -fx-fill: #001c3e;"/>
+            <Text text="Por favor, inserte su tarjeta para comenzar" style="-fx-font-size: 20; -fx-fill: #5c5f61; -fx-text-alignment: center;"/>
+            <Label style="-fx-font-size: 80; -fx-text-fill: #001c3e;">💳</Label>
+            <Text style="-fx-font-size: 24; -fx-fill: #001c3e; -fx-font-weight: bold;">⬆</Text>
+            <HBox spacing="20" alignment="CENTER" style="-fx-padding: 20; -fx-background-color: white; -fx-border-color: #c3c6d0; -fx-border-radius: 16; -fx-background-radius: 16;">
+                <VBox alignment="CENTER" spacing="5">
+                    <Text text="🔒" style="-fx-font-size: 24;"/>
+                    <Text text="Transacción Segura" style="-fx-font-size: 14; -fx-fill: #5c5f61;"/>
+                </VBox>
+                <VBox alignment="CENTER" spacing="5">
+                    <Text text="📹" style="-fx-font-size: 24;"/>
+                    <Text text="Vigilancia 24/7" style="-fx-font-size: 14; -fx-fill: #5c5f61;"/>
+                </VBox>
+                <VBox alignment="CENTER" spacing="5">
+                    <Text text="📱" style="-fx-font-size: 24;"/>
+                    <Text text="Contactless Ready" style="-fx-font-size: 14; -fx-fill: #5c5f61;"/>
+                </VBox>
+            </HBox>
+            <Button fx:id="btnSimularInsercion" text="Simular Inserción de Tarjeta" onAction="#handleInsertCard"
+                    style="-fx-background-color: #001c3e; -fx-text-fill: white; -fx-font-size: 18; -fx-padding: 16 32; -fx-background-radius: 30;"/>
+        </VBox>
+    </center>
+
+    <bottom>
+        <fx:include source="../common/Footer.fxml"/>
+    </bottom>
+</BorderPane>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.aos.consumidoras.cajero_red.infrastructure.adapter.in.fx.AuthCardController"
+            style="-fx-background-color: #f8f9ff;">
+
+    <top>
+        <fx:include source="../common/TopAppBar.fxml"/>
+    </top>
+
+    <center>
+        <VBox spacing="20" alignment="CENTER" style="-fx-padding: 60; -fx-max-width: 400;">
+            <Text text="Autenticación con Tarjeta" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-fill: #001c3e;"/>
+            <Text text="Ingrese los datos de su tarjeta para acceder" style="-fx-fill: #5c5f61; -fx-font-size: 16;"/>
+
+            <VBox spacing="5" alignment="CENTER_LEFT" style="-fx-pref-width: 100%;">
+                <Text text="Número de Tarjeta" style="-fx-fill: #5c5f61;"/>
+                <TextField fx:id="cardNumberField" promptText="1234 5678 9012 3456" style="-fx-background-color: white; -fx-border-color: #c3c6d0; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 12; -fx-pref-width: 100%;"/>
+            </VBox>
+
+            <VBox spacing="5" alignment="CENTER_LEFT" style="-fx-pref-width: 100%;">
+                <Text text="NIP" style="-fx-fill: #5c5f61;"/>
+                <PasswordField fx:id="nipField" promptText="****" style="-fx-background-color: white; -fx-border-color: #c3c6d0; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 12; -fx-pref-width: 100%;"/>
+            </VBox>
+
+            <Label fx:id="mensajeLabel" textFill="red" wrapText="true" style="-fx-font-size: 14;"/>
+
+            <HBox spacing="20" style="-fx-padding: 10 0;">
+                <Button text="Cancelar" onAction="#handleCancel" style="-fx-background-color: transparent; -fx-text-fill: #5c5f61; -fx-border-color: #c3c6d0; -fx-border-radius: 30; -fx-background-radius: 30; -fx-padding: 12 40;"/>
+                <Button text="Validar Tarjeta" onAction="#handleValidate" style="-fx-background-color: #001c3e; -fx-text-fill: white; -fx-border-radius: 30; -fx-background-radius: 30; -fx-padding: 12 40; -fx-font-weight: bold;"/>
+            </HBox>
+        </VBox>
+    </center>
+
+    <bottom>
+        <fx:include source="../common/Footer.fxml"/>
+    </bottom>
+</BorderPane>

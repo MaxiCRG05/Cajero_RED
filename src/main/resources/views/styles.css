@@ -1,0 +1,60 @@
+.root {
+    -fx-font-family: 'Inter', sans-serif;
+    -fx-background-color: #f8f9ff;
+}
+
+.top-app-bar {
+    -fx-background-color: #001c3e;
+}
+
+.side-nav {
+    -fx-background-color: white;
+    -fx-border-color: #c3c6d0;
+    -fx-border-radius: 16;
+    -fx-background-radius: 16;
+}
+
+.footer {
+    -fx-background-color: #eff4ff;
+    -fx-border-color: #c3c6d0;
+    -fx-border-width: 1 0 0 0;
+}
+
+.primary-btn {
+    -fx-background-color: #001c3e;
+    -fx-text-fill: white;
+    -fx-background-radius: 30;
+    -fx-padding: 12 40;
+    -fx-font-weight: bold;
+}
+
+.quick-amount-btn {
+    -fx-background-color: white;
+    -fx-border-color: #c3c6d0;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 12 24;
+}
+
+.quick-amount-btn:hover {
+    -fx-background-color: #e6eeff;
+}
+
+.numpad-btn {
+    -fx-pref-width: 60;
+    -fx-pref-height: 60;
+    -fx-font-size: 24;
+    -fx-background-color: white;
+    -fx-border-color: #c3c6d0;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+}
+
+.numpad-btn:hover {
+    -fx-background-color: #f0f0f0;
+}
+
+.numpad-btn {
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}

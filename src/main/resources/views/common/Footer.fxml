@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Text?>
+
+<HBox xmlns="http://javafx.com/javafx/21"
+      styleClass="footer"
+      style="-fx-padding: 12 40; -fx-border-color: #c3c6d0; -fx-border-width: 1 0 0 0; -fx-background-color: #eff4ff; -fx-alignment: center; -fx-spacing: 20;">
+
+    <Text text="© 2026. Cajero RED."
+          style="-fx-fill: #5c5f61; -fx-font-size: 14;"/>
+</HBox>

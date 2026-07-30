@@ -1,3 +1,13 @@
 spring:
-  application:
-    name: Cajero_Red
+  main:
+    web-application-type: none
+
+cajero:
+  auth:
+    url: http://jansunfleubuntu.duckdns.org:8081
+  esb:
+    url: http://jansunfleubuntu.duckdns.org:8086
+
+logging:
+  level:
+    com.aos.consumidoras.cajero_red: DEBUG

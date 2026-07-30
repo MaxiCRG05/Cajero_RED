@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.aos.consumidoras.cajero_red.infrastructure.adapter.in.fx.SideNavBarController"
+      styleClass="side-nav"
+      style="-fx-pref-width: 250; -fx-background-color: white; -fx-padding: 20; -fx-border-color: #c3c6d0; -fx-border-radius: 16; -fx-background-radius: 16; -fx-spacing: 10;">
+    <VBox spacing="5" alignment="CENTER_LEFT">
+        <Text text="👤" style="-fx-font-size: 48;"/>
+        <Text text="Bienvenido de nuevo" style="-fx-font-size: 16; -fx-fill: #5c5f61;"/>
+        <Text fx:id="userNameLabel" text="Juan Pérez" style="-fx-font-size: 20; -fx-font-weight: bold; -fx-fill: #001c3e;"/>
+    </VBox>
+
+    <Separator/>
+
+    <Button fx:id="withdrawButton" text="Retirar" onAction="#handleWithdraw"
+            style="-fx-background-color: transparent; -fx-text-fill: #5c5f61; -fx-background-radius: 12; -fx-padding: 12;"
+            maxWidth="Infinity"/>
+    <Button fx:id="depositButton" text="Depositar" onAction="#handleDeposit"
+            style="-fx-background-color: transparent; -fx-text-fill: #5c5f61; -fx-background-radius: 12; -fx-padding: 12;"
+            maxWidth="Infinity"/>
+    <Button fx:id="balanceButton" text="Consultar Saldo" onAction="#handleBalance"
+            style="-fx-background-color: transparent; -fx-text-fill: #5c5f61; -fx-background-radius: 12; -fx-padding: 12;"
+            maxWidth="Infinity"/>
+
+    <Region VBox.vgrow="ALWAYS"/>
+
+    <Button fx:id="emergencyButton" text="Asistencia de Emergencia" onAction="#handleEmergency"
+            style="-fx-background-color: #ba1a1a; -fx-text-fill: white; -fx-background-radius: 30; -fx-padding: 12;"
+            maxWidth="Infinity"/>
+</VBox>
