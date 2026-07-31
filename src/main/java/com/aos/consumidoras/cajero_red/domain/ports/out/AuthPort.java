@@ -6,4 +6,5 @@ public interface AuthPort
 {
     TokenResponse login(String correo, String contrasena);
     TokenResponse loginTarjeta(String numeroTarjeta, String nip);
+    TokenResponse obtenerTokenPorUsuarioId(Integer usuarioId);
 }

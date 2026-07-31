@@ -41,6 +41,18 @@ public class ESBAdapter implements ESBPort
     }
 
     @Override
+    public UsuarioDTO obtenerUsuarioPorTelefono(String telefono)
+    {
+        ESBRequest request = buildRequest("CONSULTA_USUARIO_POR_TELEFONO", null,
+                Map.of("telefono", telefono));
+        ESBResponse response = execute(request, null);
+        if (!response.getBody().isExito())
+            throw new RuntimeException(response.getBody().getMensaje());
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.convertValue(response.getBody().getDatos(), UsuarioDTO.class);
+    }
+
+    @Override
     public SaldoResponse consultarSaldo(Long cuentaId, String token)
     {
         ESBRequest request = buildRequest("CONSULTA", token,
@@ -51,7 +63,7 @@ public class ESBAdapter implements ESBPort
         Map<String, Object> datos = (Map<String, Object>) response.getBody().getDatos();
         return new SaldoResponse(
                 ((Number) datos.get("CuentaId")).longValue(),
-                new java.math.BigDecimal(datos.get("Saldo").toString()),
+                new BigDecimal(datos.get("Saldo").toString()),
                 datos.get("Moneda").toString()
         );
     }
@@ -111,7 +123,7 @@ public class ESBAdapter implements ESBPort
         TransaccionResponse trans = new TransaccionResponse();
         trans.setTransaccionId(((Number) datos.get("transaccionId")).longValue());
         trans.setCuentaId(((Number) datos.get("cuentaId")).longValue());
-        trans.setMontoCantidad(new java.math.BigDecimal(datos.get("montoCantidad").toString()));
+        trans.setMontoCantidad(new BigDecimal(datos.get("montoCantidad").toString()));
         trans.setMontoMoneda(datos.get("montoMoneda").toString());
         String fechaStr = (String) datos.get("fecha");
         trans.setFecha(LocalDateTime.parse(fechaStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
@@ -137,7 +149,7 @@ public class ESBAdapter implements ESBPort
         TransaccionResponse trans = new TransaccionResponse();
         trans.setTransaccionId(((Number) datos.get("transaccionId")).longValue());
         trans.setCuentaId(((Number) datos.get("cuentaId")).longValue());
-        trans.setMontoCantidad(new java.math.BigDecimal(datos.get("montoCantidad").toString()));
+        trans.setMontoCantidad(new BigDecimal(datos.get("montoCantidad").toString()));
         trans.setMontoMoneda(datos.get("montoMoneda").toString());
         String fechaStr = (String) datos.get("fecha");
         trans.setFecha(LocalDateTime.parse(fechaStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
@@ -165,7 +177,7 @@ public class ESBAdapter implements ESBPort
         transfer.setCuentaDestinoId(((Number) datos.get("cuentaDestinoId")).longValue());
         Map<String, Object> montoData = (Map<String, Object>) datos.get("monto");
         transfer.setMonto(new Monto(
-                new java.math.BigDecimal(montoData.get("cantidad").toString()),
+                new BigDecimal(montoData.get("cantidad").toString()),
                 (String) montoData.get("moneda")
         ));
         transfer.setConcepto((String) datos.get("concepto"));
@@ -174,13 +186,13 @@ public class ESBAdapter implements ESBPort
         Map<String, Object> saldoOrigenNuevo = (Map<String, Object>) datos.get("saldoOrigenNuevo");
         if (saldoOrigenNuevo != null)
             transfer.setSaldoOrigenNuevo(new Monto(
-                    new java.math.BigDecimal(saldoOrigenNuevo.get("cantidad").toString()),
+                    new BigDecimal(saldoOrigenNuevo.get("cantidad").toString()),
                     (String) saldoOrigenNuevo.get("moneda")
             ));
         Map<String, Object> saldoDestinoNuevo = (Map<String, Object>) datos.get("saldoDestinoNuevo");
         if (saldoDestinoNuevo != null)
             transfer.setSaldoDestinoNuevo(new Monto(
-                    new java.math.BigDecimal(saldoDestinoNuevo.get("cantidad").toString()),
+                    new BigDecimal(saldoDestinoNuevo.get("cantidad").toString()),
                     (String) saldoDestinoNuevo.get("moneda")
             ));
         return transfer;
@@ -205,7 +217,8 @@ public class ESBAdapter implements ESBPort
     {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", "Bearer " + token);
+        if (token != null && !token.isEmpty())
+            headers.set("Authorization", "Bearer " + token);
         HttpEntity<ESBRequest> entity = new HttpEntity<>(request, headers);
         String url = esbUrl + "/api/v1/esb/dispatch";
         ResponseEntity<ESBResponse> response = restTemplate.exchange(

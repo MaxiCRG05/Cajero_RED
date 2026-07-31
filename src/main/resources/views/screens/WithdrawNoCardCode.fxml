@@ -2,14 +2,13 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
 
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.aos.consumidoras.cajero_red.infrastructure.adapter.in.fx.AuthCardController"
+            fx:controller="com.aos.consumidoras.cajero_red.infrastructure.adapter.in.fx.WithdrawNoCardCodeController"
             stylesheets="@../styles.css"
             style="-fx-background-color: #f5f7fc;">
 
@@ -19,19 +18,13 @@
 
     <center>
         <VBox spacing="28" alignment="CENTER" style="-fx-padding: 60px; -fx-max-width: 600;">
-            <Text text="Autenticación con Tarjeta" style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-fill: #001c3e;"/>
-            <Text text="Ingrese los datos de su tarjeta para acceder" style="-fx-font-size: 20px; -fx-fill: #5c6f87;"/>
+            <Text text="Verificar Código" style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-fill: #001c3e;"/>
+            <Text text="Ingrese el código de 8 dígitos enviado a su teléfono" style="-fx-font-size: 20px; -fx-fill: #5c6f87;"/>
 
             <VBox spacing="8" alignment="CENTER_LEFT" style="-fx-pref-width: 100%;">
-                <Text text="Número de Tarjeta" style="-fx-font-size: 18px; -fx-fill: #5c6f87;"/>
-                <TextField fx:id="cardNumberField" promptText="1234 5678 9012 3456"
+                <Text text="Código de Seguridad" style="-fx-font-size: 18px; -fx-fill: #5c6f87;"/>
+                <TextField fx:id="codeField" promptText="12345678"
                            style="-fx-pref-width: 100%; -fx-font-size: 20px; -fx-padding: 18px 22px;"/>
-            </VBox>
-
-            <VBox spacing="8" alignment="CENTER_LEFT" style="-fx-pref-width: 100%;">
-                <Text text="NIP" style="-fx-font-size: 18px; -fx-fill: #5c6f87;"/>
-                <PasswordField fx:id="nipField" promptText="****"
-                               style="-fx-pref-width: 100%; -fx-font-size: 20px; -fx-padding: 18px 22px;"/>
             </VBox>
 
             <Label fx:id="mensajeLabel" textFill="red" wrapText="true" style="-fx-font-size: 18px;"/>
@@ -39,7 +32,7 @@
             <HBox spacing="24" alignment="CENTER" style="-fx-padding: 20px 0;">
                 <Button fx:id="btnCancelar" text="Cancelar" onAction="#handleCancel" styleClass="secondary-btn"
                         style="-fx-font-size: 20px; -fx-padding: 16px 56px;"/>
-                <Button fx:id="btnValidar" text="Validar Tarjeta" onAction="#handleValidate" styleClass="primary-btn"
+                <Button fx:id="btnVerificar" text="Verificar" onAction="#handleVerificar" styleClass="primary-btn"
                         style="-fx-font-size: 20px; -fx-padding: 16px 56px;"/>
             </HBox>
         </VBox>

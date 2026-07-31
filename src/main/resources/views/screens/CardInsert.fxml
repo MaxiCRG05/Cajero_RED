@@ -8,34 +8,33 @@
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.aos.consumidoras.cajero_red.infrastructure.adapter.in.fx.CardInsertController"
-            style="-fx-background-color: #f8f9ff;">
+            stylesheets="@../styles.css"
+            style="-fx-background-color: #f0f4f9;">
 
     <top>
         <fx:include source="../common/TopAppBar.fxml"/>
     </top>
 
     <center>
-        <VBox spacing="30" alignment="CENTER" style="-fx-padding: 60;">
-            <Text text="Bienvenido" style="-fx-font-size: 48; -fx-font-weight: bold; -fx-fill: #001c3e;"/>
-            <Text text="Por favor, inserte su tarjeta para comenzar" style="-fx-font-size: 20; -fx-fill: #5c5f61; -fx-text-alignment: center;"/>
-            <Label style="-fx-font-size: 80; -fx-text-fill: #001c3e;">💳</Label>
-            <Text style="-fx-font-size: 24; -fx-fill: #001c3e; -fx-font-weight: bold;">⬆</Text>
-            <HBox spacing="20" alignment="CENTER" style="-fx-padding: 20; -fx-background-color: white; -fx-border-color: #c3c6d0; -fx-border-radius: 16; -fx-background-radius: 16;">
-                <VBox alignment="CENTER" spacing="5">
-                    <Text text="🔒" style="-fx-font-size: 24;"/>
-                    <Text text="Transacción Segura" style="-fx-font-size: 14; -fx-fill: #5c5f61;"/>
-                </VBox>
-                <VBox alignment="CENTER" spacing="5">
-                    <Text text="📹" style="-fx-font-size: 24;"/>
-                    <Text text="Vigilancia 24/7" style="-fx-font-size: 14; -fx-fill: #5c5f61;"/>
-                </VBox>
-                <VBox alignment="CENTER" spacing="5">
-                    <Text text="📱" style="-fx-font-size: 24;"/>
-                    <Text text="Contactless Ready" style="-fx-font-size: 14; -fx-fill: #5c5f61;"/>
-                </VBox>
-            </HBox>
-            <Button fx:id="btnSimularInsercion" text="Simular Inserción de Tarjeta" onAction="#handleInsertCard"
-                    style="-fx-background-color: #001c3e; -fx-text-fill: white; -fx-font-size: 18; -fx-padding: 16 32; -fx-background-radius: 30;"/>
+        <VBox spacing="8" alignment="CENTER" style="-fx-padding: 30px 40px;">
+            <Text text="Bienvenido" style="-fx-font-size: 48px; -fx-font-weight: 700; -fx-fill: #0f1a2e;"/>
+            <Text text="Por favor, inserte su tarjeta para comenzar" style="-fx-font-size: 24px; -fx-fill: #64748b;"/>
+
+            <Label fx:id="cardIcon" style="-fx-font-size: 240px; -fx-text-fill: #0f1a2e;">💳</Label>
+
+            <Text fx:id="arrowIcon" style="-fx-font-size: 80px; -fx-fill: #0f1a2e; -fx-font-weight: 700;">⬆</Text>
+
+            <!-- Botones en columna: Retiro sin Tarjeta arriba -->
+            <VBox spacing="16" alignment="CENTER">
+                <!-- Botón de Retiro sin Tarjeta (verde) arriba -->
+                <Button fx:id="btnRetiroSinTarjeta" text="Retiro sin Tarjeta" onAction="#handleWithdrawNoCard"
+                        style="-fx-background-color: #0b9e6e; -fx-text-fill: white; -fx-background-radius: 30px; -fx-padding: 20px 56px; -fx-font-size: 22px; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(11, 158, 110, 0.4), 12, 0, 0, 4); -fx-cursor: hand;"/>
+
+                <!-- Botón de Simular Inserción de Tarjeta (azul) abajo -->
+                <Button fx:id="btnSimularInsercion" text="Simular Inserción de Tarjeta"
+                        onAction="#handleInsertCard"
+                        styleClass="primary-btn" style="-fx-padding: 20px 48px; -fx-font-size: 22px;"/>
+            </VBox>
         </VBox>
     </center>
 

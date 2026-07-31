@@ -7,7 +7,8 @@
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.aos.consumidoras.cajero_red.infrastructure.adapter.in.fx.ErrorController"
-            style="-fx-background-color: #f8f9ff;">
+            style="-fx-background-color: #f8f9ff;"
+            stylesheets="@../styles.css">
 
     <top>
         <fx:include source="../common/TopAppBar.fxml"/>

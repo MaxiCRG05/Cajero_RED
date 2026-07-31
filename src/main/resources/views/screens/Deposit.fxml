@@ -8,7 +8,8 @@
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.aos.consumidoras.cajero_red.infrastructure.adapter.in.fx.DepositController"
-            style="-fx-background-color: #f8f9ff;">
+            stylesheets="@../styles.css"
+            style="-fx-background-color: #f5f7fc;">
 
     <top>
         <fx:include source="../common/TopAppBar.fxml"/>
@@ -19,34 +20,41 @@
     </left>
 
     <center>
-        <VBox spacing="20" alignment="CENTER" style="-fx-padding: 20 40; -fx-max-width: 600;">
-            <Text text="Depósito de Efectivo" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-fill: #001c3e;"/>
+        <VBox spacing="20" alignment="CENTER" style="-fx-padding: 32px 48px; -fx-max-width: 700;">
+            <Text text="Depósito de Efectivo" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-fill: #001c3e;"/>
+            <Text text="Ingrese el monto a depositar" style="-fx-font-size: 18px; -fx-fill: #5c6f87;"/>
 
-            <Text text="Ingrese el monto a depositar" style="-fx-fill: #5c5f61; -fx-font-size: 14;"/>
-
-            <VBox spacing="5" alignment="CENTER_LEFT" style="-fx-pref-width: 100%;">
-                <Text text="Monto a Depositar" style="-fx-fill: #5c5f61;"/>
-                <TextField fx:id="amountField" style="-fx-font-size: 30; -fx-font-weight: bold; -fx-text-fill: #001c3e; -fx-background-color: white; -fx-border-color: #c3c6d0; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 12;" editable="false"/>
+            <VBox spacing="6" alignment="CENTER" style="-fx-pref-width: 100%;">
+                <Text text="Monto a Depositar" style="-fx-font-size: 16px; -fx-fill: #5c6f87;"/>
+                <TextField fx:id="amountField"
+                           style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #001c3e; -fx-pref-width: 320px; -fx-padding: 16px; -fx-alignment: CENTER_RIGHT;"
+                           editable="false"/>
             </VBox>
 
-            <GridPane hgap="10" vgap="10" alignment="CENTER">
-                <Button text="1" onAction="#pressKey1" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-pref-width: 60; -fx-pref-height: 60; -fx-font-size: 24; -fx-background-color: white; -fx-border-color: #c3c6d0; -fx-border-radius: 12; -fx-background-radius: 12;"/>
-                <Button text="2" onAction="#pressKey2" GridPane.columnIndex="1" GridPane.rowIndex="0" style="-fx-pref-width: 60; -fx-pref-height: 60; -fx-font-size: 24; -fx-background-color: white; -fx-border-color: #c3c6d0; -fx-border-radius: 12; -fx-background-radius: 12;"/>
-                <Button text="3" onAction="#pressKey3" GridPane.columnIndex="2" GridPane.rowIndex="0" style="-fx-pref-width: 60; -fx-pref-height: 60; -fx-font-size: 24; -fx-background-color: white; -fx-border-color: #c3c6d0; -fx-border-radius: 12; -fx-background-radius: 12;"/>
-                <Button text="4" onAction="#pressKey4" GridPane.columnIndex="0" GridPane.rowIndex="1" style="-fx-pref-width: 60; -fx-pref-height: 60; -fx-font-size: 24; -fx-background-color: white; -fx-border-color: #c3c6d0; -fx-border-radius: 12; -fx-background-radius: 12;"/>
-                <Button text="5" onAction="#pressKey5" GridPane.columnIndex="1" GridPane.rowIndex="1" style="-fx-pref-width: 60; -fx-pref-height: 60; -fx-font-size: 24; -fx-background-color: white; -fx-border-color: #c3c6d0; -fx-border-radius: 12; -fx-background-radius: 12;"/>
-                <Button text="6" onAction="#pressKey6" GridPane.columnIndex="2" GridPane.rowIndex="1" style="-fx-pref-width: 60; -fx-pref-height: 60; -fx-font-size: 24; -fx-background-color: white; -fx-border-color: #c3c6d0; -fx-border-radius: 12; -fx-background-radius: 12;"/>
-                <Button text="7" onAction="#pressKey7" GridPane.columnIndex="0" GridPane.rowIndex="2" style="-fx-pref-width: 60; -fx-pref-height: 60; -fx-font-size: 24; -fx-background-color: white; -fx-border-color: #c3c6d0; -fx-border-radius: 12; -fx-background-radius: 12;"/>
-                <Button text="8" onAction="#pressKey8" GridPane.columnIndex="1" GridPane.rowIndex="2" style="-fx-pref-width: 60; -fx-pref-height: 60; -fx-font-size: 24; -fx-background-color: white; -fx-border-color: #c3c6d0; -fx-border-radius: 12; -fx-background-radius: 12;"/>
-                <Button text="9" onAction="#pressKey9" GridPane.columnIndex="2" GridPane.rowIndex="2" style="-fx-pref-width: 60; -fx-pref-height: 60; -fx-font-size: 24; -fx-background-color: white; -fx-border-color: #c3c6d0; -fx-border-radius: 12; -fx-background-radius: 12;"/>
-                <Button text="⌫" onAction="#pressBackspace" GridPane.columnIndex="0" GridPane.rowIndex="3" style="-fx-pref-width: 60; -fx-pref-height: 60; -fx-font-size: 24; -fx-background-color: #ffdad6; -fx-border-color: #c3c6d0; -fx-border-radius: 12; -fx-background-radius: 12;"/>
-                <Button text="0" onAction="#pressKey0" GridPane.columnIndex="1" GridPane.rowIndex="3" style="-fx-pref-width: 60; -fx-pref-height: 60; -fx-font-size: 24; -fx-background-color: white; -fx-border-color: #c3c6d0; -fx-border-radius: 12; -fx-background-radius: 12;"/>
-                <Button text="C" onAction="#clearAll" GridPane.columnIndex="2" GridPane.rowIndex="3" style="-fx-pref-width: 60; -fx-pref-height: 60; -fx-font-size: 24; -fx-background-color: #c3c6d0; -fx-border-color: #c3c6d0; -fx-border-radius: 12; -fx-background-radius: 12;"/>
+            <!-- Teclado numérico con 4 columnas -->
+            <GridPane fx:id="keypadGrid"  hgap="12" vgap="12" alignment="CENTER">
+                <Button text="1" onAction="#pressKey1" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="numpad-btn"/>
+                <Button text="2" onAction="#pressKey2" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="numpad-btn"/>
+                <Button text="3" onAction="#pressKey3" GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="numpad-btn"/>
+
+                <Button text="4" onAction="#pressKey4" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="numpad-btn"/>
+                <Button text="5" onAction="#pressKey5" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="numpad-btn"/>
+                <Button text="6" onAction="#pressKey6" GridPane.columnIndex="2" GridPane.rowIndex="1" styleClass="numpad-btn"/>
+
+                <Button text="7" onAction="#pressKey7" GridPane.columnIndex="0" GridPane.rowIndex="2" styleClass="numpad-btn"/>
+                <Button text="8" onAction="#pressKey8" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="numpad-btn"/>
+                <Button text="9" onAction="#pressKey9" GridPane.columnIndex="2" GridPane.rowIndex="2" styleClass="numpad-btn"/>
+
+                <!-- Fila 3: 0, punto, backspace y clear -->
+                <Button text="0" onAction="#pressKey0" GridPane.columnIndex="0" GridPane.rowIndex="3" styleClass="numpad-btn"/>
+                <Button text="." onAction="#pressDot" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="numpad-btn" style="-fx-font-weight: bold;"/>
+                <Button text="⌫" onAction="#pressBackspace" GridPane.columnIndex="2" GridPane.rowIndex="3" styleClass="numpad-btn" style="-fx-background-color: #ffdad6;"/>
+                <Button text="C" onAction="#clearAll" GridPane.columnIndex="3" GridPane.rowIndex="3" styleClass="numpad-btn" style="-fx-background-color: #e0e4ed;"/>
             </GridPane>
 
-            <HBox spacing="20" style="-fx-padding: 10 0;">
-                <Button fx:id="cancelButton" text="Cancelar" onAction="#handleCancel" style="-fx-background-color: transparent; -fx-text-fill: #5c5f61; -fx-border-color: #c3c6d0; -fx-border-radius: 30; -fx-background-radius: 30; -fx-padding: 12 40;"/>
-                <Button fx:id="confirmButton" text="Confirmar Depósito" onAction="#handleConfirm" style="-fx-background-color: #001c3e; -fx-text-fill: white; -fx-border-radius: 30; -fx-background-radius: 30; -fx-padding: 12 40; -fx-font-weight: bold;"/>
+            <HBox spacing="20" alignment="CENTER">
+                <Button fx:id="cancelButton" text="Cancelar" onAction="#handleCancel" styleClass="secondary-btn" style="-fx-font-size: 18px; -fx-padding: 14px 48px;"/>
+                <Button fx:id="confirmButton" text="Confirmar Depósito" onAction="#handleConfirm" styleClass="primary-btn" style="-fx-font-size: 18px; -fx-padding: 14px 48px;"/>
             </HBox>
         </VBox>
     </center>

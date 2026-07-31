@@ -12,7 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SideNavBarController
+public class SideNavBarController extends BaseController
 {
     private final ApplicationContext applicationContext;
     private final SceneManager sceneManager;
@@ -35,6 +35,8 @@ public class SideNavBarController
     @FXML
     public void initialize()
     {
+        addSmoothScaleHover(homeButton, withdrawButton, depositButton, balanceButton,
+                transferButton, logoutButton, emergencyButton);
         String nombre = SessionManager.getInstance().getUsuarioNombre();
         if (nombre != null)
             userNameLabel.setText(nombre);
@@ -89,18 +91,45 @@ public class SideNavBarController
 
     private void setActiveButton(Button selectedButton)
     {
-        String defaultStyle = "-fx-background-color: transparent; -fx-text-fill: #5c5f61; -fx-background-radius: 12; -fx-padding: 12;";
-        String activeStyle = "-fx-background-color: #0b315e; -fx-text-fill: white; -fx-background-radius: 12; -fx-padding: 12; -fx-font-weight: bold;";
+        String defaultStyle = "-fx-background-color: transparent; " +
+                "-fx-text-fill: #334155; " +
+                "-fx-background-radius: 12px; " +
+                "-fx-padding: 12px 16px; " +
+                "-fx-font-weight: 500; " +
+                "-fx-border-color: transparent; " +
+                "-fx-border-width: 0 0 0 4px; " +
+                "-fx-transition: all 0.2s ease-in-out;";
 
-        homeButton.setStyle(defaultStyle);
-        withdrawButton.setStyle(defaultStyle);
-        depositButton.setStyle(defaultStyle);
-        balanceButton.setStyle(defaultStyle);
-        transferButton.setStyle(defaultStyle);
+        String activeStyle = "-fx-background-color: #0b315e; " +
+                "-fx-text-fill: white; " +
+                "-fx-background-radius: 12px; " +
+                "-fx-padding: 12px 16px 12px 12px; " +
+                "-fx-font-weight: 700; " +
+                "-fx-border-color: #4edea3; " +
+                "-fx-border-width: 0 0 0 4px; " +
+                "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 2, 0); " +
+                "-fx-transition: all 0.2s ease-in-out;";
 
-        logoutButton.setStyle("-fx-background-color: transparent; -fx-text-fill: #ba1a1a; -fx-background-radius: 12; -fx-padding: 12; -fx-border-color: #ba1a1a; -fx-border-radius: 12;");
+        resetButtonStyle(homeButton, defaultStyle);
+        resetButtonStyle(withdrawButton, defaultStyle);
+        resetButtonStyle(depositButton, defaultStyle);
+        resetButtonStyle(balanceButton, defaultStyle);
+        resetButtonStyle(transferButton, defaultStyle);
 
         selectedButton.setStyle(activeStyle);
+
+        Text triangle = new Text("▸ ");
+        triangle.setStyle("-fx-font-size: 20px; -fx-fill: #4edea3; -fx-font-weight: bold;");
+        selectedButton.setGraphic(triangle);
+    }
+
+    private void resetButtonStyle(Button button, String style)
+    {
+        if (button != null)
+        {
+            button.setStyle(style);
+            button.setGraphic(null);
+        }
     }
 
     public void setActiveButtonById(String buttonId)
@@ -115,9 +144,7 @@ public class SideNavBarController
             case "transferButton": target = transferButton; break;
         }
         if (target != null)
-        {
             setActiveButton(target);
-        }
     }
 
     private void navegarA(String fxmlPath, ActionEvent event)
@@ -136,8 +163,6 @@ public class SideNavBarController
     public void setUserName(String name)
     {
         if (userNameLabel != null)
-        {
             userNameLabel.setText(name);
-        }
     }
 }

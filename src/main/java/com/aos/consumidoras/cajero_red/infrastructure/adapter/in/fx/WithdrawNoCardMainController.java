@@ -3,15 +3,17 @@ package com.aos.consumidoras.cajero_red.infrastructure.adapter.in.fx;
 import com.aos.consumidoras.cajero_red.application.SceneManager;
 import com.aos.consumidoras.cajero_red.application.SessionManager;
 import com.aos.consumidoras.cajero_red.domain.model.dto.Monto;
+import com.aos.consumidoras.cajero_red.domain.model.dto.SaldoResponse;
 import com.aos.consumidoras.cajero_red.domain.model.dto.TransaccionResponse;
-import com.aos.consumidoras.cajero_red.domain.ports.in.usecases.RealizarDepositoUseCase;
-import javafx.concurrent.Task;
+import com.aos.consumidoras.cajero_red.domain.ports.in.usecases.ConsultarSaldoUseCase;
+import com.aos.consumidoras.cajero_red.domain.ports.in.usecases.RealizarRetiroUseCase;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,37 +23,28 @@ import org.springframework.web.client.ResourceAccessException;
 import java.math.BigDecimal;
 
 @Component
-public class DepositController extends BaseController
+public class WithdrawNoCardMainController extends BaseController
 {
     @FXML private TextField amountField;
     @FXML private Button cancelButton;
     @FXML private Button confirmButton;
-    @FXML private SideNavBarController sideNavController;
+    @FXML private Text saldoLabel;
+    @FXML private Button logoutButton;
+    @FXML private Button emergencyButton;
 
     @FXML private GridPane keypadGrid;
     @FXML private HBox quickAmountsBox;
 
-    // ---- Teclado numérico ----
-    @FXML private void pressKey1() { addDigit("1"); }
-    @FXML private void pressKey2() { addDigit("2"); }
-    @FXML private void pressKey3() { addDigit("3"); }
-    @FXML private void pressKey4() { addDigit("4"); }
-    @FXML private void pressKey5() { addDigit("5"); }
-    @FXML private void pressKey6() { addDigit("6"); }
-    @FXML private void pressKey7() { addDigit("7"); }
-    @FXML private void pressKey8() { addDigit("8"); }
-    @FXML private void pressKey9() { addDigit("9"); }
-    @FXML private void pressKey0() { addDigit("0"); }
-
-    @Autowired private RealizarDepositoUseCase depositoService;
+    @Autowired private RealizarRetiroUseCase retiroService;
+    @Autowired private ConsultarSaldoUseCase consultarSaldo;
     @Autowired private SceneManager sceneManager;
 
-    private String clabeCuenta;
+    private BigDecimal saldoActual;
 
     @FXML
     public void initialize()
     {
-        addSmoothScaleHover(cancelButton, confirmButton);
+        addSmoothScaleHover(cancelButton, confirmButton, logoutButton, emergencyButton);
 
         if (keypadGrid != null)
         {
@@ -65,19 +58,50 @@ public class DepositController extends BaseController
                     .filter(node -> node instanceof Button)
                     .forEach(btn -> addSmoothScaleHover((Button) btn));
         }
+
         amountField.setText("$0");
-        sideNavController.setActiveButtonById("depositButton");
-        clabeCuenta = SessionManager.getInstance().getClabe();
-        if (clabeCuenta == null || clabeCuenta.isEmpty())
-            showAlert("Advertencia", "No se pudo obtener la CLABE de su cuenta. Por favor, cierre sesión y vuelva a iniciar.");
+        cargarSaldo();
     }
+
+    private void cargarSaldo()
+    {
+        try
+        {
+            String token = SessionManager.getInstance().getToken();
+            Integer usuarioId = SessionManager.getInstance().getUsuarioId();
+            if (token != null && !token.isEmpty() && usuarioId != null)
+            {
+                Long cuentaId = usuarioId.longValue();
+                SaldoResponse saldo = consultarSaldo.consultarSaldo(cuentaId, token);
+                saldoActual = saldo.getSaldo();
+                saldoLabel.setText("$" + saldo.getSaldo() + " " + saldo.getMoneda());
+            }
+            else
+                saldoLabel.setText("Saldo no disponible");
+
+        }
+        catch (Exception e)
+        {
+            saldoLabel.setText("Error al cargar saldo");
+        }
+    }
+
+    @FXML private void pressKey1() { addDigit("1"); }
+    @FXML private void pressKey2() { addDigit("2"); }
+    @FXML private void pressKey3() { addDigit("3"); }
+    @FXML private void pressKey4() { addDigit("4"); }
+    @FXML private void pressKey5() { addDigit("5"); }
+    @FXML private void pressKey6() { addDigit("6"); }
+    @FXML private void pressKey7() { addDigit("7"); }
+    @FXML private void pressKey8() { addDigit("8"); }
+    @FXML private void pressKey9() { addDigit("9"); }
+    @FXML private void pressKey0() { addDigit("0"); }
 
     @FXML private void pressDot()
     {
         String current = amountField.getText();
         String numeric = current.startsWith("$") ? current.substring(1) : current;
-        if (numeric.contains("."))
-            return;
+        if (numeric.contains(".")) return;
         if (numeric.isEmpty() || numeric.equals("0"))
             numeric = "0.";
         else
@@ -112,10 +136,15 @@ public class DepositController extends BaseController
         amountField.setText("$" + numeric);
     }
 
+    @FXML private void setAmount100() { amountField.setText("$100"); }
+    @FXML private void setAmount200() { amountField.setText("$200"); }
+    @FXML private void setAmount500() { amountField.setText("$500"); }
+    @FXML private void setAmount1000() { amountField.setText("$1000"); }
+
     @FXML
     private void handleCancel()
     {
-        goToMainMenu();
+        irAlMenuPrincipal();
     }
 
     @FXML
@@ -139,81 +168,96 @@ public class DepositController extends BaseController
         }
 
         String token = SessionManager.getInstance().getToken();
-        if (token == null)
+        Integer usuarioId = SessionManager.getInstance().getUsuarioId();
+        if (token == null || usuarioId == null)
         {
             showAlert("Error", "No hay sesión activa. Por favor, inicie sesión nuevamente.");
             return;
         }
 
-        if (clabeCuenta == null || clabeCuenta.isEmpty())
+        if (saldoActual != null && monto.compareTo(saldoActual) > 0)
         {
-            showAlert("Error", "No se pudo obtener la CLABE de su cuenta. Por favor, cierre sesión y vuelva a iniciar.");
+            showAlert("Error", "Saldo insuficiente. Su saldo actual es: $" + saldoActual);
             return;
         }
+
+        Long cuentaId = usuarioId.longValue();
 
         confirmButton.setDisable(true);
         cancelButton.setDisable(true);
 
-        Alert progressAlert = new Alert(Alert.AlertType.INFORMATION);
-        progressAlert.setTitle("Depósito en proceso");
-        progressAlert.setHeaderText("Contando billetes...");
-        progressAlert.setContentText("Por favor, espere mientras se cuentan los billetes.");
-        progressAlert.setGraphic(null);
-        progressAlert.show();
-
-        Task<TransaccionResponse> task = new Task<>()
+        try
         {
-            @Override
-            protected TransaccionResponse call() throws Exception
-            {
-                Thread.sleep(2000);
-                return depositoService.depositar(
-                        clabeCuenta,
-                        new Monto(monto, "MXN"),
-                        "REF-" + System.currentTimeMillis(),
-                        "Depósito en cajero",
-                        token
-                );
-            }
-        };
-
-        task.setOnSucceeded(event ->
+            TransaccionResponse response = retiroService.retirar(
+                    cuentaId,
+                    new Monto(monto, "MXN"),
+                    "SIN_TARJETA",
+                    "Retiro sin tarjeta",
+                    token
+            );
+            showAlert("Retiro exitoso", "ID transacción: " + response.getTransaccionId());
+            irAlMenuPrincipal();
+        }
+        catch (HttpStatusCodeException e)
         {
-            progressAlert.close();
-            TransaccionResponse response = task.getValue();
-            showAlert("Depósito exitoso", "ID transacción: " + response.getTransaccionId());
-            confirmButton.setDisable(false);
-            cancelButton.setDisable(false);
-            goToMainMenu();
-        });
-
-        task.setOnFailed(event ->
-        {
-            progressAlert.close();
-            Throwable ex = task.getException();
-            manejarExcepcionDeposito(ex);
-            confirmButton.setDisable(false);
-            cancelButton.setDisable(false);
-        });
-
-        new Thread(task).start();
-    }
-
-    private void manejarExcepcionDeposito(Throwable ex)
-    {
-        if (ex instanceof HttpStatusCodeException)
-        {
-            HttpStatusCodeException e = (HttpStatusCodeException) ex;
             String mensaje = extraerMensajeError(e);
             if (e.getStatusCode().is4xxClientError())
-                showAlert("Error en el depósito", mensaje);
+                showAlert("Error en el retiro", mensaje);
             else
                 showAlert("Error del servidor", "Ocurrió un problema en el servidor. Por favor, intente más tarde.\n" + mensaje);
         }
-        else if (ex instanceof ResourceAccessException)
+        catch (ResourceAccessException e)
+        {
             showAlert("Error de conexión", "No se pudo conectar con el servidor. Verifique su conexión a Internet.");
-        else
-            showAlert("Error inesperado", "Ha ocurrido un error inesperado: " + ex.getMessage());
+        }
+        catch (Exception e)
+        {
+            showAlert("Error inesperado", "Ha ocurrido un error inesperado: " + e.getMessage());
+        }
+        finally
+        {
+            confirmButton.setDisable(false);
+            cancelButton.setDisable(false);
+        }
+    }
+
+    @FXML
+    private void handleLogout()
+    {
+        SessionManager.getInstance().setToken(null);
+        SessionManager.getInstance().setUsuarioId(null);
+        SessionManager.getInstance().setUsuarioNombre(null);
+        try
+        {
+            Stage stage = (Stage) logoutButton.getScene().getWindow();
+            sceneManager.cambiarEscena(stage, "/views/screens/CardInsert.fxml");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleEmergency()
+    {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Asistencia");
+        alert.setHeaderText("Ayuda de Emergencia");
+        alert.setContentText("Para recibir asistencia o reportar un problema, comuníquese con el soporte técnico o utilice el teléfono de emergencia integrado.");
+        alert.showAndWait();
+    }
+
+    private void irAlMenuPrincipal() {
+        try
+        {
+            Stage stage = (Stage) cancelButton.getScene().getWindow();
+            sceneManager.cambiarEscena(stage, "/views/screens/Main.fxml");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     private String extraerMensajeError(HttpStatusCodeException e)
@@ -243,12 +287,6 @@ public class DepositController extends BaseController
         {
             return "Error desconocido: " + e.getMessage();
         }
-    }
-
-    private void goToMainMenu()
-    {
-        Stage stage = (Stage) cancelButton.getScene().getWindow();
-        sceneManager.cambiarEscena(stage, "/views/screens/Main.fxml");
     }
 
     private void showAlert(String title, String message)

@@ -6,8 +6,8 @@
 
 <HBox xmlns="http://javafx.com/javafx/21"
       styleClass="top-app-bar"
-      style="-fx-background-color: #001c3e; -fx-padding: 0 40; -fx-min-height: 80; -fx-alignment: center-left; -fx-spacing: 20;">
+      style="-fx-min-height: 96px; -fx-padding: 0 48px; -fx-background-color: #001c3e; -fx-alignment: center-left; -fx-spacing: 20;">
 
-    <Text text="CAJERO" style="-fx-fill: white; -fx-font-size: 36; -fx-font-weight: bold; -fx-font-family: 'Inter';"/>
+    <Text text="CAJERO" style="-fx-fill: white; -fx-font-size: 44px; -fx-font-weight: bold;"/>
     <Region HBox.hgrow="ALWAYS"/>
 </HBox>

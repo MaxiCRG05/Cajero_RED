@@ -39,11 +39,18 @@ public class AuthAdapter implements AuthPort
         String url = authUrl + "/api/Autenticacion/login-tarjeta";
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        Map<String, String> body = Map.of(
-                "numeroTarjeta", numeroTarjeta,
-                "nip", nip
-        );
+        Map<String, String> body = Map.of("numeroTarjeta", numeroTarjeta, "nip", nip);
         HttpEntity<Map<String, String>> entity = new HttpEntity<>(body, headers);
+        return restTemplate.postForObject(url, entity, TokenResponse.class);
+    }
+
+    @Override
+    public TokenResponse obtenerTokenPorUsuarioId(Integer usuarioId)
+    {
+        String url = authUrl + "/api/Autenticacion/token/" + usuarioId;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
         return restTemplate.postForObject(url, entity, TokenResponse.class);
     }
 }

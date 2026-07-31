@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<HBox xmlns="http://javafx.com/javafx/21"
+<VBox xmlns="http://javafx.com/javafx/21"
       styleClass="footer"
-      style="-fx-padding: 12 40; -fx-border-color: #c3c6d0; -fx-border-width: 1 0 0 0; -fx-background-color: #eff4ff; -fx-alignment: center; -fx-spacing: 20;">
+      style="-fx-padding: 6px 32px; -fx-alignment: center; -fx-spacing: 2px;">
+
+    <HBox spacing="20" alignment="CENTER" style="-fx-padding: 2px 0;">
+        <HBox spacing="6" alignment="CENTER">
+            <Text text="🔒" style="-fx-font-size: 18px;"/>
+            <Text text="Transacción Segura" style="-fx-font-size: 18px; -fx-fill: #64748b;"/>
+        </HBox>
+        <HBox spacing="6" alignment="CENTER">
+            <Text text="📹" style="-fx-font-size: 18px;"/>
+            <Text text="Vigilancia 24/7" style="-fx-font-size: 18px; -fx-fill: #64748b;"/>
+        </HBox>
+        <HBox spacing="6" alignment="CENTER">
+            <Text text="📱" style="-fx-font-size: 18px;"/>
+            <Text text="Contactless Ready" style="-fx-font-size: 18px; -fx-fill: #64748b;"/>
+        </HBox>
+    </HBox>
 
     <Text text="© 2026. Cajero RED."
-          style="-fx-fill: #5c5f61; -fx-font-size: 14;"/>
-</HBox>
+          style="-fx-fill: #5c5f61; -fx-font-size: 18px;"/>
+</VBox>

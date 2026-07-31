@@ -9,6 +9,7 @@ import com.aos.consumidoras.cajero_red.domain.ports.out.ESBPort;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -19,13 +20,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AuthCardController
+public class AuthCardController extends BaseController
 {
     private static final Logger logger = LoggerFactory.getLogger(AuthCardController.class);
 
     @FXML private TextField cardNumberField;
     @FXML private PasswordField nipField;
     @FXML private Label mensajeLabel;
+    @FXML private Button btnCancelar;
+    @FXML private Button btnValidar;
 
     @Autowired
     private AuthPort authPort;
@@ -34,6 +37,12 @@ public class AuthCardController
 
     @Autowired
     private SceneManager sceneManager;
+
+    @FXML
+    public void initialize()
+    {
+        addSmoothScaleHover(btnCancelar, btnValidar);
+    }
 
     @FXML
     public void handleValidate(ActionEvent event)

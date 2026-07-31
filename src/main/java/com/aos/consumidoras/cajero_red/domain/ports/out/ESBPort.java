@@ -1,12 +1,12 @@
 package com.aos.consumidoras.cajero_red.domain.ports.out;
 
 import com.aos.consumidoras.cajero_red.domain.model.dto.*;
-
 import java.util.List;
 
 public interface ESBPort
 {
     UsuarioDTO obtenerUsuario(Integer usuarioId, String token);
+    UsuarioDTO obtenerUsuarioPorTelefono(String telefono);
     SaldoResponse consultarSaldo(Long cuentaId, String token);
     List<MovimientoDTO> consultarMovimientos(Long cuentaId, String token);
     TransaccionResponse depositar(String clabeDestino, Monto monto, String referencia, String concepto, String token);

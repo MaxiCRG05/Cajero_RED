@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalTime;
 
 @Component
-public class MainController
+public class MainController extends BaseController
 {
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
@@ -30,7 +30,6 @@ public class MainController
     @FXML private Button depositButton;
     @FXML private Button balanceButton;
     @FXML private Button transferButton;
-    @FXML private Button withdrawNoCardButton;
     @FXML private SideNavBarController sideNavController;
 
     @Autowired
@@ -42,6 +41,7 @@ public class MainController
     @FXML
     public void initialize()
     {
+        addSmoothScaleHover(withdrawCard, depositCard, balanceCard, transferCard);
         String nombre = SessionManager.getInstance().getUsuarioNombre();
         int hour = LocalTime.now().getHour();
         String saludo;
@@ -117,12 +117,6 @@ public class MainController
     public void goToTransfer()
     {
         navegarA("/views/screens/Transfer.fxml");
-    }
-
-    @FXML
-    public void goToWithdrawNoCard()
-    {
-        logger.info("Navegando a Retiro sin Tarjeta...");
     }
 
     private void navegarA(String fxmlPath)

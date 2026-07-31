@@ -1,60 +1,311 @@
+/* ===== FUENTE Y RESET ===== */
 .root {
-    -fx-font-family: 'Inter', sans-serif;
-    -fx-background-color: #f8f9ff;
+    -fx-font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    -fx-background-color: #f4f6fa;
+    -fx-font-size: 16px;
+    -fx-text-fill: #1e293b;
 }
 
+/* ===== BARRA SUPERIOR ===== */
 .top-app-bar {
-    -fx-background-color: #001c3e;
+    -fx-background-color: #0b1a33;
+    -fx-min-height: 96px;
+    -fx-padding: 0 48px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 12, 0, 0, 4);
+}
+.top-app-bar Text {
+    -fx-fill: white;
+    -fx-font-size: 36px;
+    -fx-font-weight: 700;
+    -fx-letter-spacing: 1px;
 }
 
+/* ===== PANEL LATERAL ===== */
 .side-nav {
-    -fx-background-color: white;
-    -fx-border-color: #c3c6d0;
-    -fx-border-radius: 16;
-    -fx-background-radius: 16;
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 24px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 16, 0, 0, 6);
+    -fx-padding: 32px 20px;
+    -fx-spacing: 8px;
+    -fx-pref-width: 280px;
 }
 
-.footer {
-    -fx-background-color: #eff4ff;
-    -fx-border-color: #c3c6d0;
-    -fx-border-width: 1 0 0 0;
+.side-nav .button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #334155;
+    -fx-font-size: 18px;
+    -fx-padding: 14px 16px;
+    -fx-background-radius: 14px;
+    -fx-font-weight: 500;
+    -fx-cursor: hand;
+    -fx-alignment: center-left;
+    -fx-transition: all 0.2s ease-in-out;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 0 4px;
+    -fx-border-radius: 14px;
 }
 
-.primary-btn {
-    -fx-background-color: #001c3e;
+.side-nav .button:hover {
+    -fx-background-color: #dce3ef;
+    -fx-text-fill: #0b1a33;
+    -fx-translate-x: 10px;
+    -fx-font-weight: 700;
+    -fx-effect: dropshadow(gaussian, rgba(66, 133, 244, 0.7), 25, 0, 0, 8);
+    -fx-border-color: #93bbfc;
+    -fx-border-width: 0 0 0 4px;
+    -fx-border-radius: 14px 14px 14px 14px;
+}
+
+.side-nav .button:pressed {
+    -fx-background-color: #c8d2e0;
+    -fx-translate-x: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(66, 133, 244, 0.3), 12, 0, 0, 4);
+}
+
+.side-nav .button.active {
+    -fx-background-color: #0b315e;
     -fx-text-fill: white;
-    -fx-background-radius: 30;
-    -fx-padding: 12 40;
-    -fx-font-weight: bold;
+    -fx-font-weight: 700;
+    -fx-border-color: #4edea3;
+    -fx-border-width: 0 0 0 4px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 2, 0);
 }
 
+.side-nav .separator {
+    -fx-padding: 12px 0;
+}
+
+.side-nav VBox Text {
+    -fx-font-size: 18px;
+}
+.side-nav VBox Text:last-child {
+    -fx-font-size: 26px;
+}
+
+/* ===== BOTONES PRINCIPALES ===== */
+.primary-btn {
+    -fx-background-color: #2563eb;
+    -fx-text-fill: white;
+    -fx-background-radius: 30px;
+    -fx-padding: 16px 48px;
+    -fx-font-weight: 700;
+    -fx-font-size: 18px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(37,99,235,0.25), 8, 0, 0, 4);
+    -fx-transition: all 0.25s;
+}
+.primary-btn:hover {
+    -fx-background-color: #1d4ed8;
+    -fx-effect: dropshadow(gaussian, rgba(37,99,235,0.6), 20, 0, 0, 8); /* Brillo más intenso */
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+}
+.primary-btn:pressed {
+    -fx-background-color: #1e3a8a;
+    -fx-scale-x: 0.97;
+    -fx-scale-y: 0.97;
+}
+.secondary-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #334155;
+    -fx-border-color: #cbd5e1;
+    -fx-border-radius: 30px;
+    -fx-background-radius: 30px;
+    -fx-padding: 16px 48px;
+    -fx-font-weight: 600;
+    -fx-font-size: 18px;
+    -fx-cursor: hand;
+    -fx-transition: all 0.2s;
+}
+.secondary-btn:hover {
+    -fx-background-color: #f1f5f9;
+    -fx-border-color: #94a3b8;
+    -fx-effect: dropshadow(gaussian, rgba(148, 163, 184, 0.4), 16, 0, 0, 4); /* Brillo plateado */
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+/* ===== CAMPOS DE TEXTO ===== */
+.text-field, .password-field {
+    -fx-background-color: white;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 16px;
+    -fx-background-radius: 16px;
+    -fx-padding: 16px 20px;
+    -fx-font-size: 18px;
+    -fx-text-fill: #1e293b;
+    -fx-prompt-text-fill: #94a3b8;
+    -fx-border-width: 2px;
+    -fx-transition: all 0.2s ease-in-out;
+    -fx-cursor: text;
+}
+
+/* Efecto hover: brillo azul suave */
+.text-field:hover, .password-field:hover {
+    -fx-border-color: #93bbfc;
+    -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.25), 12, 0, 0, 0);
+}
+
+/* Efecto focused: más intenso y borde azul */
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #2563eb;
+    -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.3), 16, 0, 0, 0);
+}
+
+/* ===== TARJETAS (CARDS) - Menú principal ===== */
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 24px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 16, 0, 0, 4);
+    -fx-padding: 28px;
+    -fx-transition: all 0.25s;
+    -fx-cursor: hand;
+}
+.card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(66, 133, 244, 0.4), 30, 0, 0, 10); /* Brillo azul */
+    -fx-scale-x: 1.01;
+    -fx-scale-y: 1.01;
+}
+.card-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: 700;
+    -fx-fill: #0b1a33;
+}
+.card-subtitle {
+    -fx-font-size: 16px;
+    -fx-fill: #64748b;
+}
+
+/* ===== SALDO ===== */
+.balance-large {
+    -fx-font-size: 48px;
+    -fx-font-weight: 700;
+    -fx-fill: #0b1a33;
+}
+
+/* ===== TRANSACCIONES ===== */
+.transaction-row {
+    -fx-padding: 16px 0;
+    -fx-border-color: #f1f5f9;
+    -fx-border-width: 0 0 1px 0;
+}
+.transaction-concept {
+    -fx-font-weight: 600;
+    -fx-font-size: 16px;
+}
+.transaction-amount-positive {
+    -fx-fill: #10b981;
+    -fx-font-weight: 700;
+}
+.transaction-amount-negative {
+    -fx-fill: #ef4444;
+    -fx-font-weight: 700;
+}
+
+/* ===== TECLADO NUMÉRICO ===== */
+.numpad-btn {
+    -fx-pref-width: 80px;
+    -fx-pref-height: 80px;
+    -fx-font-size: 32px;
+    -fx-background-color: white;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-font-weight: 600;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.02), 4, 0, 0, 2);
+    -fx-transition: all 0.1s;
+}
+.numpad-btn:hover {
+    -fx-background-color: #f1f5f9;
+    -fx-border-color: #94a3b8;
+    -fx-effect: dropshadow(gaussian, rgba(66, 133, 244, 0.5), 20, 0, 0, 4); /* Brillo azul */
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+}
+.numpad-btn:pressed {
+    -fx-background-color: #e2e8f0;
+    -fx-scale-x: 0.92;
+    -fx-scale-y: 0.92;
+}
+
+/* ===== BOTONES DE MONTO RÁPIDO ===== */
 .quick-amount-btn {
     -fx-background-color: white;
-    -fx-border-color: #c3c6d0;
-    -fx-border-radius: 12;
-    -fx-background-radius: 12;
-    -fx-padding: 12 24;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 16px;
+    -fx-background-radius: 16px;
+    -fx-padding: 12px 28px;
+    -fx-font-weight: 700;
+    -fx-font-size: 18px;
+    -fx-cursor: hand;
+    -fx-transition: all 0.15s;
 }
-
 .quick-amount-btn:hover {
-    -fx-background-color: #e6eeff;
+    -fx-background-color: #eef2f8;
+    -fx-border-color: #94a3b8;
+    -fx-effect: dropshadow(gaussian, rgba(66, 133, 244, 0.4), 16, 0, 0, 4);
+    -fx-scale-x: 1.05;
 }
 
-.numpad-btn {
-    -fx-pref-width: 60;
-    -fx-pref-height: 60;
-    -fx-font-size: 24;
-    -fx-background-color: white;
-    -fx-border-color: #c3c6d0;
-    -fx-border-radius: 12;
-    -fx-background-radius: 12;
+/* ===== PIE DE PÁGINA ===== */
+.footer {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 1px 0 0 0;
+    -fx-padding: 4px 32px;
+    -fx-font-size: 12px;
+    -fx-text-fill: #64748b;
 }
 
-.numpad-btn:hover {
-    -fx-background-color: #f0f0f0;
+/* ===== BOTÓN DE EMERGENCIA ===== */
+.emergency-btn {
+    -fx-background-color: #ef4444;
+    -fx-text-fill: white;
+    -fx-background-radius: 30px;
+    -fx-padding: 14px 24px;
+    -fx-font-weight: 700;
+    -fx-font-size: 16px;
+    -fx-effect: dropshadow(gaussian, rgba(239,68,68,0.3), 10, 0, 0, 4);
+    -fx-transition: all 0.2s;
+}
+.emergency-btn:hover {
+    -fx-background-color: #dc2626;
+    -fx-effect: dropshadow(gaussian, rgba(239,68,68,0.6), 20, 0, 0, 8);
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
 }
 
-.numpad-btn {
-    -fx-scale-x: 0.95;
-    -fx-scale-y: 0.95;
+/* Botón de Retiro sin Tarjeta */
+.withdraw-no-card-btn {
+    -fx-background-color: #0b9e6e;
+    -fx-text-fill: white;
+    -fx-background-radius: 30px;
+    -fx-padding: 20px 48px;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(11, 158, 110, 0.4), 12, 0, 0, 4);
+    -fx-cursor: hand;
+}
+
+.withdraw-no-card-btn:hover {
+    -fx-background-color: #0a8a5e;
+    -fx-effect: dropshadow(gaussian, rgba(11, 158, 110, 0.6), 20, 0, 0, 6);
+}
+
+/* ===== BOTÓN DE CERRAR SESIÓN ===== */
+.logout-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #ba1a1a;
+    -fx-border-color: #ba1a1a;
+    -fx-border-radius: 16px;
+    -fx-padding: 14px;
+    -fx-font-weight: 600;
+    -fx-font-size: 16px;
+    -fx-transition: all 0.2s;
+}
+.logout-btn:hover {
+    -fx-background-color: #fee2e2;
+    -fx-border-color: #991b1b;
+    -fx-effect: dropshadow(gaussian, rgba(186, 26, 26, 0.3), 16, 0, 0, 4);
 }
