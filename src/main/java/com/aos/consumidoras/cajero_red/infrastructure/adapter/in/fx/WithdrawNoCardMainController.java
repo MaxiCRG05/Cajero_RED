@@ -47,17 +47,13 @@ public class WithdrawNoCardMainController extends BaseController
         addSmoothScaleHover(cancelButton, confirmButton, logoutButton, emergencyButton);
 
         if (keypadGrid != null)
-        {
             keypadGrid.getChildren().stream()
                     .filter(node -> node instanceof Button)
                     .forEach(btn -> addSmoothScaleHover((Button) btn));
-        }
         if (quickAmountsBox != null)
-        {
             quickAmountsBox.getChildren().stream()
                     .filter(node -> node instanceof Button)
                     .forEach(btn -> addSmoothScaleHover((Button) btn));
-        }
 
         amountField.setText("$0");
         cargarSaldo();
@@ -248,11 +244,15 @@ public class WithdrawNoCardMainController extends BaseController
         alert.showAndWait();
     }
 
-    private void irAlMenuPrincipal() {
+    private void irAlMenuPrincipal()
+    {
+        SessionManager.getInstance().setToken(null);
+        SessionManager.getInstance().setUsuarioId(null);
+        SessionManager.getInstance().setUsuarioNombre(null);
         try
         {
             Stage stage = (Stage) cancelButton.getScene().getWindow();
-            sceneManager.cambiarEscena(stage, "/views/screens/Main.fxml");
+            sceneManager.cambiarEscena(stage, "/views/screens/CardInsert.fxml");
         }
         catch (Exception e)
         {

@@ -2,6 +2,7 @@ package com.aos.consumidoras.cajero_red.domain.ports.out;
 
 import com.aos.consumidoras.cajero_red.domain.model.dto.*;
 import java.util.List;
+import java.util.Map;
 
 public interface ESBPort
 {
@@ -12,4 +13,5 @@ public interface ESBPort
     TransaccionResponse depositar(String clabeDestino, Monto monto, String referencia, String concepto, String token);
     TransaccionResponse retirar(Long cuentaId, Monto monto, String tipoRetiro, String concepto, String token);
     TransferenciaResponse transferir(Long cuentaOrigenId, String clabeDestino, Monto monto, String concepto, String token);
+    Map<String, Object> validarCodigoRetiro(String codigo, String token);
 }

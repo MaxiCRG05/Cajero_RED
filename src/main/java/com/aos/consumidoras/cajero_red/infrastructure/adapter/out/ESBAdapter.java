@@ -79,11 +79,13 @@ public class ESBAdapter implements ESBPort
 
         List<MovimientoDTO> movimientos = new ArrayList<>();
         Map<String, Object> datos = (Map<String, Object>) response.getBody().getDatos();
-        if (datos.containsKey("movimientos")) {
+        if (datos.containsKey("movimientos"))
+        {
             List<Map<String, Object>> lista = (List<Map<String, Object>>) datos.get("movimientos");
             DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
-            for (Map<String, Object> item : lista) {
+            for (Map<String, Object> item : lista)
+            {
                 MovimientoDTO dto = new MovimientoDTO();
                 dto.setMovimientoId(((Number) item.get("movimientoId")).longValue());
                 dto.setCuentaId(((Number) item.get("cuentaId")).longValue());
@@ -96,9 +98,8 @@ public class ESBAdapter implements ESBPort
                 LocalDateTime fecha = LocalDateTime.parse(fechaStr, formatter);
                 dto.setFecha(fecha);
 
-                if (item.containsKey("saldoPosterior") && item.get("saldoPosterior") != null) {
+                if (item.containsKey("saldoPosterior") && item.get("saldoPosterior") != null)
                     dto.setSaldoPosterior(new BigDecimal(item.get("saldoPosterior").toString()));
-                }
                 movimientos.add(dto);
             }
         }
@@ -225,5 +226,17 @@ public class ESBAdapter implements ESBPort
                 url, HttpMethod.POST, entity, ESBResponse.class
         );
         return response.getBody();
+    }
+
+    @Override
+    public Map<String, Object> validarCodigoRetiro(String codigo, String token)
+    {
+        Map<String, Object> body = new HashMap<>();
+        body.put("codigo", codigo);
+        ESBRequest request = buildRequest("VALIDAR_CODIGO_RETIRO", token, body);
+        ESBResponse response = execute(request, token);
+        if (!response.getBody().isExito())
+            throw new RuntimeException(response.getBody().getMensaje());
+        return (Map<String, Object>) response.getBody().getDatos();
     }
 }

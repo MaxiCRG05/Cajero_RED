@@ -19,7 +19,7 @@
     <center>
         <VBox spacing="28" alignment="CENTER" style="-fx-padding: 60px; -fx-max-width: 600;">
             <Text text="Verificar Código" style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-fill: #001c3e;"/>
-            <Text text="Ingrese el código de 8 dígitos enviado a su teléfono" style="-fx-font-size: 20px; -fx-fill: #5c6f87;"/>
+            <Text text="Ingrese el código de 8 dígitos para retirar sin tarjeta" style="-fx-font-size: 20px; -fx-fill: #5c6f87;"/>
 
             <VBox spacing="8" alignment="CENTER_LEFT" style="-fx-pref-width: 100%;">
                 <Text text="Código de Seguridad" style="-fx-font-size: 18px; -fx-fill: #5c6f87;"/>
@@ -32,6 +32,8 @@
             <HBox spacing="24" alignment="CENTER" style="-fx-padding: 20px 0;">
                 <Button fx:id="btnCancelar" text="Cancelar" onAction="#handleCancel" styleClass="secondary-btn"
                         style="-fx-font-size: 20px; -fx-padding: 16px 56px;"/>
+                <Button fx:id="btnGenerarPrueba" text="Generar Prueba" onAction="#handleGenerarPrueba"
+                        style="-fx-background-color: #f59e0b; -fx-text-fill: white; -fx-background-radius: 30px; -fx-padding: 16px 56px; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand;"/>
                 <Button fx:id="btnVerificar" text="Verificar" onAction="#handleVerificar" styleClass="primary-btn"
                         style="-fx-font-size: 20px; -fx-padding: 16px 56px;"/>
             </HBox>

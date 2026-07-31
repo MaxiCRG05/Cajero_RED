@@ -141,7 +141,7 @@ public class CardInsertController extends BaseController
         try
         {
             Stage stage = (Stage) btnSimularInsercion.getScene().getWindow();
-            sceneManager.cambiarEscena(stage, "/views/screens/WithdrawNoCard.fxml");
+            sceneManager.cambiarEscena(stage, "/views/screens/WithdrawNoCardCode.fxml");
         }
         catch (Exception e)
         {
