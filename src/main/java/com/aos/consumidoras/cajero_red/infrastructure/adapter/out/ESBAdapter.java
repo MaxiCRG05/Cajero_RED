@@ -36,20 +36,17 @@ public class ESBAdapter implements ESBPort
         ESBResponse response = execute(request, token);
         if (!response.getBody().isExito())
             throw new RuntimeException(response.getBody().getMensaje());
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.convertValue(response.getBody().getDatos(), UsuarioDTO.class);
+        return objectMapper.convertValue(response.getBody().getDatos(), UsuarioDTO.class);
     }
 
     @Override
     public UsuarioDTO obtenerUsuarioPorTelefono(String telefono)
     {
-        ESBRequest request = buildRequest("CONSULTA_USUARIO_POR_TELEFONO", null,
-                Map.of("telefono", telefono));
+        ESBRequest request = buildRequest("CONSULTA_USUARIO_POR_TELEFONO", null, Map.of("telefono", telefono));
         ESBResponse response = execute(request, null);
         if (!response.getBody().isExito())
             throw new RuntimeException(response.getBody().getMensaje());
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.convertValue(response.getBody().getDatos(), UsuarioDTO.class);
+        return objectMapper.convertValue(response.getBody().getDatos(), UsuarioDTO.class);
     }
 
     @Override
@@ -83,7 +80,6 @@ public class ESBAdapter implements ESBPort
         {
             List<Map<String, Object>> lista = (List<Map<String, Object>>) datos.get("movimientos");
             DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-
             for (Map<String, Object> item : lista)
             {
                 MovimientoDTO dto = new MovimientoDTO();
@@ -93,11 +89,8 @@ public class ESBAdapter implements ESBPort
                 dto.setMonto(new BigDecimal(item.get("monto").toString()));
                 dto.setMoneda((String) item.get("moneda"));
                 dto.setTipoMovimiento((String) item.get("tipoMovimiento"));
-
                 String fechaStr = (String) item.get("fecha");
-                LocalDateTime fecha = LocalDateTime.parse(fechaStr, formatter);
-                dto.setFecha(fecha);
-
+                dto.setFecha(LocalDateTime.parse(fechaStr, formatter));
                 if (item.containsKey("saldoPosterior") && item.get("saldoPosterior") != null)
                     dto.setSaldoPosterior(new BigDecimal(item.get("saldoPosterior").toString()));
                 movimientos.add(dto);
@@ -199,6 +192,43 @@ public class ESBAdapter implements ESBPort
         return transfer;
     }
 
+    @Override
+    public GenerarCodigoRetiroResponse generarCodigoRetiro(BigDecimal monto, String moneda, Integer cuentaId, String token)
+    {
+        Map<String, Object> body = new HashMap<>();
+        body.put("monto", monto);
+        body.put("moneda", moneda);
+        body.put("cuentaId", cuentaId);
+        ESBRequest request = buildRequest("GENERAR_CODIGO_RETIRO", token, body);
+        ESBResponse response = execute(request, token);
+        if (!response.getBody().isExito())
+            throw new RuntimeException(response.getBody().getMensaje());
+        return objectMapper.convertValue(response.getBody().getDatos(), GenerarCodigoRetiroResponse.class);
+    }
+
+    @Override
+    public ValidarCodigoRetiroResponse validarCodigoRetiro(String codigo, String token)
+    {
+        Map<String, Object> body = new HashMap<>();
+        body.put("codigo", codigo);
+        ESBRequest request = buildRequest("VALIDAR_CODIGO_RETIRO", token, body);
+        ESBResponse response = execute(request, token);
+        if (!response.getBody().isExito())
+            throw new RuntimeException(response.getBody().getMensaje());
+        return objectMapper.convertValue(response.getBody().getDatos(), ValidarCodigoRetiroResponse.class);
+    }
+
+    @Override
+    public void ejecutarRetiroSinTarjeta(Integer solicitudId, String token)
+    {
+        Map<String, Object> body = new HashMap<>();
+        body.put("solicitudId", solicitudId);
+        ESBRequest request = buildRequest("EJECUTAR_RETIRO_SIN_TARJETA", token, body);
+        ESBResponse response = execute(request, token);
+        if (!response.getBody().isExito())
+            throw new RuntimeException(response.getBody().getMensaje());
+    }
+
     private ESBRequest buildRequest(String tipoOperacion, String token, Object body)
     {
         Header header = new Header();
@@ -226,17 +256,5 @@ public class ESBAdapter implements ESBPort
                 url, HttpMethod.POST, entity, ESBResponse.class
         );
         return response.getBody();
-    }
-
-    @Override
-    public Map<String, Object> validarCodigoRetiro(String codigo, String token)
-    {
-        Map<String, Object> body = new HashMap<>();
-        body.put("codigo", codigo);
-        ESBRequest request = buildRequest("VALIDAR_CODIGO_RETIRO", token, body);
-        ESBResponse response = execute(request, token);
-        if (!response.getBody().isExito())
-            throw new RuntimeException(response.getBody().getMensaje());
-        return (Map<String, Object>) response.getBody().getDatos();
     }
 }

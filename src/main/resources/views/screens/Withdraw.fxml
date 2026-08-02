@@ -40,13 +40,12 @@
 
             <!-- Montos rápidos (escapados) -->
             <HBox fx:id="quickAmountsBox" spacing="12" alignment="CENTER">
-                <Button text="\$100" onAction="#setAmount100" styleClass="quick-amount-btn" style="-fx-font-size: 16px; -fx-padding: 10px 24px;"/>
-                <Button text="\$200" onAction="#setAmount200" styleClass="quick-amount-btn" style="-fx-font-size: 16px; -fx-padding: 10px 24px;"/>
-                <Button text="\$500" onAction="#setAmount500" styleClass="quick-amount-btn" style="-fx-font-size: 16px; -fx-padding: 10px 24px; -fx-background-color: #001c3e; -fx-text-fill: white;"/>
-                <Button text="\$1000" onAction="#setAmount1000" styleClass="quick-amount-btn" style="-fx-font-size: 16px; -fx-padding: 10px 24px;"/>
+                <Button text="\$100" onAction="#setAmount100" styleClass="quick-amount-btn"/>
+                <Button text="\$200" onAction="#setAmount200" styleClass="quick-amount-btn"/>
+                <Button text="\$500" onAction="#setAmount500" styleClass="quick-amount-btn"/>
+                <Button text="\$1000" onAction="#setAmount1000" styleClass="quick-amount-btn"/>
             </HBox>
 
-            <!-- Teclado numérico con 4 columnas -->
             <GridPane fx:id="keypadGrid" hgap="12" vgap="12" alignment="CENTER">
                 <Button text="1" onAction="#pressKey1" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="numpad-btn"/>
                 <Button text="2" onAction="#pressKey2" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="numpad-btn"/>
@@ -62,9 +61,8 @@
 
                 <!-- Fila 3: 0, punto, backspace y clear -->
                 <Button text="0" onAction="#pressKey0" GridPane.columnIndex="0" GridPane.rowIndex="3" styleClass="numpad-btn"/>
-                <Button text="." onAction="#pressDot" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="numpad-btn" style="-fx-font-weight: bold;"/>
-                <Button text="⌫" onAction="#pressBackspace" GridPane.columnIndex="2" GridPane.rowIndex="3" styleClass="numpad-btn" style="-fx-background-color: #ffdad6;"/>
-                <Button text="C" onAction="#clearAll" GridPane.columnIndex="3" GridPane.rowIndex="3" styleClass="numpad-btn" style="-fx-background-color: #e0e4ed;"/>
+                <Button text="⌫" onAction="#pressBackspace" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="numpad-btn" style="-fx-background-color: #ffdad6; font-size: 12px"/>
+                <Button text="C" onAction="#clearAll" GridPane.columnIndex="2" GridPane.rowIndex="3" styleClass="numpad-btn" style="-fx-background-color: #e0e4ed;"/>
             </GridPane>
 
             <!-- Botones de acción centrados -->

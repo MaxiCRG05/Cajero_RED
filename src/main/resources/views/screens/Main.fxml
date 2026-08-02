@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
 
@@ -8,7 +10,7 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.aos.consumidoras.cajero_red.infrastructure.adapter.in.fx.MainController"
             stylesheets="@../styles.css"
-            style="-fx-background-color: #f5f7fc;">
+            style="-fx-background-color: #f4f6fa;">
 
     <top>
         <fx:include source="../common/TopAppBar.fxml"/>
@@ -19,96 +21,116 @@
     </left>
 
     <center>
-        <VBox spacing="28" style="-fx-padding: 32px 48px;">
-            <!-- Saludo -->
-            <VBox spacing="6">
-                <Text text="Estado de sesión: Protegido" style="-fx-font-size: 14px; -fx-fill: #5c6f87;"/>
-                <Text fx:id="welcomeMessage" text="Buenos Días, Juan Pérez"
-                      style="-fx-font-size: 34px; -fx-font-weight: bold; -fx-fill: #001c3e;"/>
-                <Region style="-fx-background-color: #4edea3; -fx-pref-height: 6px; -fx-pref-width: 80px; -fx-background-radius: 4px;"/>
-            </VBox>
+        <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: transparent; -fx-padding: 0;">
+            <content>
+                <VBox spacing="24" style="-fx-padding: 28px 32px;" VBox.vgrow="ALWAYS">
+                    <!-- Saludo -->
+                    <VBox spacing="4">
+                        <Text text="Estado de sesión: Protegido" style="-fx-font-size: 13px; -fx-fill: #64748b;"/>
+                        <Text fx:id="welcomeMessage" text="Buenos Días, Juan Pérez"
+                              style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-fill: #0b1a33;"/>
+                        <Region style="-fx-background-color: #4edea3; -fx-pref-height: 5px; -fx-pref-width: 70px; -fx-background-radius: 4px;"/>
+                    </VBox>
 
-            <!-- Grid de tarjetas -->
-            <GridPane hgap="24" vgap="24" VBox.vgrow="ALWAYS">
-                <columnConstraints>
-                    <ColumnConstraints percentWidth="50"/>
-                    <ColumnConstraints percentWidth="50"/>
-                </columnConstraints>
+                    <!-- Saldo destacado -->
+                    <HBox spacing="20" alignment="CENTER_LEFT" styleClass="card" style="-fx-padding: 20px 24px;">
+                        <Label text="💰" style="-fx-font-size: 48px; -fx-text-fill: #0b1a33;"/>
+                        <VBox spacing="4">
+                            <Text text="Saldo disponible" style="-fx-font-size: 15px; -fx-fill: #64748b;"/>
+                            <Label fx:id="saldoLabel" text="Cargando..." style="-fx-font-size: 32px; -fx-font-weight: 700; -fx-fill: #0b1a33;"/>
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="btnVerSaldo" text="Ver detalle" onAction="#goToBalance" styleClass="secondary-btn" style="-fx-font-size: 14px; -fx-padding: 8px 24px;"/>
+                    </HBox>
 
-                <!-- Retirar -->
-                <Button fx:id="withdrawCard" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2"
-                        styleClass="card" style="-fx-alignment: center-left; -fx-padding: 24px 28px; -fx-cursor: hand;"
-                        onAction="#goToWithdraw">
-                    <graphic>
-                        <HBox spacing="20" alignment="CENTER_LEFT">
-                            <Text text="🏧" style="-fx-font-size: 56px;"/>
-                            <VBox spacing="6" alignment="CENTER_LEFT">
-                                <Text text="Retirar Dinero" styleClass="card-title"/>
-                                <Text text="Acceso rápido a efectivo" styleClass="card-subtitle"/>
-                                <HBox spacing="10">
-                                    <Text text="\$100" style="-fx-font-size: 14px; -fx-fill: #001c3e; -fx-background-color: #e6eeff; -fx-padding: 4px 14px; -fx-background-radius: 14px;"/>
-                                    <Text text="\$200" style="-fx-font-size: 14px; -fx-fill: #001c3e; -fx-background-color: #e6eeff; -fx-padding: 4px 14px; -fx-background-radius: 14px;"/>
-                                    <Text text="\$500" style="-fx-font-size: 14px; -fx-fill: #001c3e; -fx-background-color: #e6eeff; -fx-padding: 4px 14px; -fx-background-radius: 14px;"/>
-                                </HBox>
-                            </VBox>
+                    <!-- Últimas transacciones -->
+                    <VBox spacing="10" styleClass="card" style="-fx-padding: 20px;">
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <Text text="📋" style="-fx-font-size: 24px;"/>
+                            <Text text="Movimientos recientes" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-fill: #0b1a33;"/>
                             <Region HBox.hgrow="ALWAYS"/>
-                            <Text text="→" style="-fx-font-size: 24px; -fx-fill: #001c3e; -fx-font-weight: bold;"/>
+                            <Button text="Ver todos" onAction="#goToBalance" styleClass="secondary-btn" style="-fx-font-size: 13px; -fx-padding: 4px 16px;"/>
                         </HBox>
-                    </graphic>
-                </Button>
+                        <VBox fx:id="transactionsContainer" spacing="6" style="-fx-padding: 6px 0;"/>
+                    </VBox>
 
-                <!-- Consultar Saldo -->
-                <Button fx:id="balanceCard" GridPane.columnIndex="0" GridPane.rowIndex="1"
-                        styleClass="card" style="-fx-background-color: #001c3e; -fx-alignment: center-left; -fx-padding: 24px 28px; -fx-cursor: hand;"
-                        onAction="#goToBalance">
-                    <graphic>
-                        <HBox spacing="20" alignment="CENTER_LEFT">
-                            <Text text="💰" style="-fx-font-size: 56px;"/>
-                            <VBox spacing="6" alignment="CENTER_LEFT">
-                                <Text text="Consultar Saldo" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-fill: white;"/>
-                                <Text text="Revise sus balances" style="-fx-font-size: 16px; -fx-fill: rgba(255,255,255,0.7);"/>
-                            </VBox>
-                            <Region HBox.hgrow="ALWAYS"/>
-                            <Text text="→" style="-fx-font-size: 24px; -fx-fill: rgba(255,255,255,0.5); -fx-font-weight: bold;"/>
-                        </HBox>
-                    </graphic>
-                </Button>
+                    <!-- Acciones rápidas (grid de 2 columnas) -->
+                    <VBox VBox.vgrow="ALWAYS" style="-fx-min-height: 0;">
+                        <GridPane hgap="20" vgap="20" GridPane.vgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="50"/>
+                                <ColumnConstraints percentWidth="50"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints percentHeight="50" vgrow="ALWAYS"/>
+                                <RowConstraints percentHeight="50" vgrow="ALWAYS"/>
+                            </rowConstraints>
 
-                <!-- Depositar -->
-                <Button fx:id="depositCard" GridPane.columnIndex="1" GridPane.rowIndex="1"
-                        styleClass="card" style="-fx-background-color: #0b315e; -fx-alignment: center-left; -fx-padding: 24px 28px; -fx-cursor: hand;"
-                        onAction="#goToDeposit">
-                    <graphic>
-                        <HBox spacing="20" alignment="CENTER_LEFT">
-                            <Text text="💵" style="-fx-font-size: 56px;"/>
-                            <VBox spacing="6" alignment="CENTER_LEFT">
-                                <Text text="Depositar" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-fill: white;"/>
-                                <Text text="Depósito de efectivo" style="-fx-font-size: 16px; -fx-fill: rgba(255,255,255,0.7);"/>
-                            </VBox>
-                            <Region HBox.hgrow="ALWAYS"/>
-                            <Text text="→" style="-fx-font-size: 24px; -fx-fill: rgba(255,255,255,0.5); -fx-font-weight: bold;"/>
-                        </HBox>
-                    </graphic>
-                </Button>
+                            <!-- Retirar -->
+                            <Button fx:id="withdrawCard" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                                    styleClass="action-btn, action-btn-withdraw"
+                                    onAction="#goToWithdraw" maxWidth="Infinity" maxHeight="Infinity">
+                                <graphic>
+                                    <HBox spacing="16" alignment="CENTER_LEFT">
+                                        <Text text="🏧" styleClass="icon"/>
+                                        <VBox spacing="2" alignment="CENTER_LEFT">
+                                            <Text text="Retirar Dinero" styleClass="title"/>
+                                            <Text text="Acceso rápido a efectivo" styleClass="subtitle"/>
+                                        </VBox>
+                                    </HBox>
+                                </graphic>
+                            </Button>
 
-                <!-- Transferir -->
-                <Button fx:id="transferCard" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="2"
-                        styleClass="card" style="-fx-alignment: center-left; -fx-padding: 24px 28px; -fx-cursor: hand;"
-                        onAction="#goToTransfer">
-                    <graphic>
-                        <HBox spacing="20" alignment="CENTER_LEFT">
-                            <Text text="🔄" style="-fx-font-size: 56px;"/>
-                            <VBox spacing="6" alignment="CENTER_LEFT">
-                                <Text text="Transferir Fondos" styleClass="card-title"/>
-                                <Text text="Envíe dinero a otras cuentas o pague sus tarjetas." styleClass="card-subtitle"/>
-                            </VBox>
-                            <Region HBox.hgrow="ALWAYS"/>
-                            <Text text="Comenzar →" style="-fx-font-size: 16px; -fx-fill: #001c3e; -fx-font-weight: bold; -fx-background-color: #e6eeff; -fx-padding: 6px 16px; -fx-background-radius: 24px;"/>
-                        </HBox>
-                    </graphic>
-                </Button>
-            </GridPane>
-        </VBox>
+                            <!-- Depositar -->
+                            <Button fx:id="depositCard" GridPane.columnIndex="1" GridPane.rowIndex="0"
+                                    styleClass="action-btn, action-btn-success"
+                                    onAction="#goToDeposit" maxWidth="Infinity" maxHeight="Infinity">
+                                <graphic>
+                                    <HBox spacing="16" alignment="CENTER_LEFT">
+                                        <Text text="💵" styleClass="icon"/>
+                                        <VBox spacing="2" alignment="CENTER_LEFT">
+                                            <Text text="Depositar" styleClass="title"/>
+                                            <Text text="Depósito de efectivo" styleClass="subtitle"/>
+                                        </VBox>
+                                    </HBox>
+                                </graphic>
+                            </Button>
+
+                            <!-- Transferir -->
+                            <Button fx:id="transferCard" GridPane.columnIndex="0" GridPane.rowIndex="1"
+                                    styleClass="action-btn, action-btn-warning"
+                                    onAction="#goToTransfer" maxWidth="Infinity" maxHeight="Infinity">
+                                <graphic>
+                                    <HBox spacing="16" alignment="CENTER_LEFT">
+                                        <Text text="🔄" styleClass="icon"/>
+                                        <VBox spacing="2" alignment="CENTER_LEFT">
+                                            <Text text="Transferir Fondos" styleClass="title"/>
+                                            <Text text="Envíe dinero a otras cuentas" styleClass="subtitle"/>
+                                        </VBox>
+                                    </HBox>
+                                </graphic>
+                            </Button>
+
+                            <!-- Consultar Saldo -->
+                            <Button fx:id="balanceCard" GridPane.columnIndex="1" GridPane.rowIndex="1"
+                                    styleClass="action-btn, action-btn-info"
+                                    onAction="#goToBalance" maxWidth="Infinity" maxHeight="Infinity">
+                                <graphic>
+                                    <HBox spacing="16" alignment="CENTER_LEFT">
+                                        <Text text="💰" styleClass="icon"/>
+                                        <VBox spacing="2" alignment="CENTER_LEFT">
+                                            <Text text="Consultar Saldo" styleClass="title"/>
+                                            <Text text="Revise sus balances" styleClass="subtitle"/>
+                                        </VBox>
+                                    </HBox>
+                                </graphic>
+                            </Button>
+
+                        </GridPane>
+                    </VBox>
+                </VBox>
+            </content>
+        </ScrollPane>
     </center>
 
     <bottom>

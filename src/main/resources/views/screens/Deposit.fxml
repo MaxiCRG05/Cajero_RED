@@ -47,9 +47,8 @@
 
                 <!-- Fila 3: 0, punto, backspace y clear -->
                 <Button text="0" onAction="#pressKey0" GridPane.columnIndex="0" GridPane.rowIndex="3" styleClass="numpad-btn"/>
-                <Button text="." onAction="#pressDot" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="numpad-btn" style="-fx-font-weight: bold;"/>
-                <Button text="⌫" onAction="#pressBackspace" GridPane.columnIndex="2" GridPane.rowIndex="3" styleClass="numpad-btn" style="-fx-background-color: #ffdad6;"/>
-                <Button text="C" onAction="#clearAll" GridPane.columnIndex="3" GridPane.rowIndex="3" styleClass="numpad-btn" style="-fx-background-color: #e0e4ed;"/>
+                <Button text="⌫" onAction="#pressBackspace" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="numpad-btn" style="-fx-background-color: #ffdad6;"/>
+                <Button text="C" onAction="#clearAll" GridPane.columnIndex="2" GridPane.rowIndex="3" styleClass="numpad-btn" style="-fx-background-color: #e0e4ed;"/>
             </GridPane>
 
             <HBox spacing="20" alignment="CENTER">

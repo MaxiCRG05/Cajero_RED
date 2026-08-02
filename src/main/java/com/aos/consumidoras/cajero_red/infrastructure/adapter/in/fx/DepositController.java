@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -19,6 +20,7 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.ResourceAccessException;
 
 import java.math.BigDecimal;
+import java.util.function.UnaryOperator;
 
 @Component
 public class DepositController extends BaseController
@@ -53,6 +55,16 @@ public class DepositController extends BaseController
     {
         addSmoothScaleHover(cancelButton, confirmButton);
 
+        UnaryOperator<TextFormatter.Change> amountFilter = change ->
+        {
+            String newText = change.getControlNewText();
+            if (newText.matches("\\$?\\d*\\.?\\d*"))
+                return change;
+            return null;
+        };
+        amountField.setTextFormatter(new TextFormatter<>(amountFilter));
+        amountField.setText("$0");
+
         if (keypadGrid != null)
         {
             keypadGrid.getChildren().stream()
@@ -65,7 +77,6 @@ public class DepositController extends BaseController
                     .filter(node -> node instanceof Button)
                     .forEach(btn -> addSmoothScaleHover((Button) btn));
         }
-        amountField.setText("$0");
         sideNavController.setActiveButtonById("depositButton");
         clabeCuenta = SessionManager.getInstance().getClabe();
         if (clabeCuenta == null || clabeCuenta.isEmpty())

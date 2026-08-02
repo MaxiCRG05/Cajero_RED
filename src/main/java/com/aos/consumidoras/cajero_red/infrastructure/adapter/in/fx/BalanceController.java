@@ -30,14 +30,9 @@ public class BalanceController extends BaseController
     @FXML private Button backButton;
     @FXML private SideNavBarController sideNavController;
 
-    @Autowired
-    private ConsultarSaldoUseCase consultarSaldo;
-
-    @Autowired
-    private ConsultarMovimientosUseCase consultarMovimientos;
-
-    @Autowired
-    private SceneManager sceneManager;
+    @Autowired private ConsultarSaldoUseCase consultarSaldo;
+    @Autowired private ConsultarMovimientosUseCase consultarMovimientos;
+    @Autowired private SceneManager sceneManager;
 
     @FXML
     public void initialize()
@@ -127,44 +122,47 @@ public class BalanceController extends BaseController
                     String signo = "INGRESO".equalsIgnoreCase(tipo) ? "+" : "-";
                     String montoStr = signo + " $" + String.format("%,.2f", mov.getMonto()) + " " + mov.getMoneda();
                     String fechaStr = mov.getFecha().format(dateFormatter) + " " + mov.getFecha().format(timeFormatter);
-                    String descripcion = mov.getDescripcion() != null ? mov.getDescripcion() : "Movimiento " + mov.getMovimientoId();
-                    transactionsContainer.getChildren().add(createTransactionRow(descripcion, montoStr, fechaStr));
+                    transactionsContainer.getChildren().add(createTransactionRow(tipo, montoStr, fechaStr));
                 }
             }
             else
-                transactionsContainer.getChildren().add(createTransactionRow("No hay sesión activa", "", ""));
+                transactionsContainer.getChildren().add(createTransactionRow("", "No hay sesión activa", ""));
         }
         catch (Exception e)
         {
             transactionsContainer.getChildren().clear();
-            transactionsContainer.getChildren().add(createTransactionRow("Error al cargar movimientos", e.getMessage(), ""));
+            transactionsContainer.getChildren().add(createTransactionRow("", "Error al cargar movimientos", ""));
             e.printStackTrace();
         }
     }
 
-    private javafx.scene.Node createTransactionRow(String concepto, String monto, String fecha)
+    private javafx.scene.Node createTransactionRow(String tipo, String monto, String fecha)
     {
         HBox row = new HBox();
         row.setStyle("-fx-padding: 10; -fx-border-color: #e0e0e0; -fx-border-width: 0 0 1 0; -fx-alignment: CENTER_LEFT;");
 
-        Text conceptText = new Text(concepto);
-        conceptText.setStyle("-fx-font-weight: bold; -fx-font-size: 16;");
+        Text tipoText = new Text(tipo != null ? tipo : "");
+        tipoText.setStyle("-fx-font-weight: bold; -fx-font-size: 16; -fx-fill: #2563eb;");
+        tipoText.setWrappingWidth(180);
+
+        Region spacerLeft = new Region();
+        HBox.setHgrow(spacerLeft, Priority.ALWAYS);
 
         Text montoText = new Text(monto);
         if (monto.startsWith("-"))
-            montoText.setStyle("-fx-fill: #ba1a1a; -fx-font-weight: bold;");
+            montoText.setStyle("-fx-fill: #ba1a1a; -fx-font-weight: bold; -fx-font-size: 16;");
         else if (monto.startsWith("+"))
-            montoText.setStyle("-fx-fill: #00ae79; -fx-font-weight: bold;");
+            montoText.setStyle("-fx-fill: #00ae79; -fx-font-weight: bold; -fx-font-size: 16;");
         else
-            montoText.setStyle("-fx-fill: #5c5f61;");
+            montoText.setStyle("-fx-fill: #5c5f61; -fx-font-size: 16;");
 
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
+        Region spacerRight = new Region();
+        HBox.setHgrow(spacerRight, Priority.ALWAYS);
 
         Text fechaText = new Text(fecha);
         fechaText.setStyle("-fx-fill: #5c5f61; -fx-font-size: 12;");
 
-        row.getChildren().addAll(conceptText, montoText, spacer, fechaText);
+        row.getChildren().addAll(tipoText, spacerLeft, montoText, spacerRight, fechaText);
         return row;
     }
 

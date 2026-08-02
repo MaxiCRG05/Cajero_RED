@@ -21,19 +21,37 @@
             <Text text="Verificar Código" style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-fill: #001c3e;"/>
             <Text text="Ingrese el código de 8 dígitos para retirar sin tarjeta" style="-fx-font-size: 20px; -fx-fill: #5c6f87;"/>
 
-            <VBox spacing="8" alignment="CENTER_LEFT" style="-fx-pref-width: 100%;">
-                <Text text="Código de Seguridad" style="-fx-font-size: 18px; -fx-fill: #5c6f87;"/>
-                <TextField fx:id="codeField" promptText="12345678"
-                           style="-fx-pref-width: 100%; -fx-font-size: 20px; -fx-padding: 18px 22px;"/>
-            </VBox>
+            <HBox spacing="10" alignment="CENTER">
+                <Text fx:id="codigoDisplay" text="• • • • • • • •" style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-fill: #001c3e; -fx-letter-spacing: 8px;"/>
+            </HBox>
 
-            <Label fx:id="mensajeLabel" textFill="red" wrapText="true" style="-fx-font-size: 18px;"/>
+            <GridPane hgap="12" vgap="12" alignment="CENTER">
+                <Button text="1" onAction="#pressKey1" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="numpad-btn"/>
+                <Button text="2" onAction="#pressKey2" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="numpad-btn"/>
+                <Button text="3" onAction="#pressKey3" GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="numpad-btn"/>
 
-            <HBox spacing="24" alignment="CENTER" style="-fx-padding: 20px 0;">
+                <Button text="4" onAction="#pressKey4" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="numpad-btn"/>
+                <Button text="5" onAction="#pressKey5" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="numpad-btn"/>
+                <Button text="6" onAction="#pressKey6" GridPane.columnIndex="2" GridPane.rowIndex="1" styleClass="numpad-btn"/>
+
+                <Button text="7" onAction="#pressKey7" GridPane.columnIndex="0" GridPane.rowIndex="2" styleClass="numpad-btn"/>
+                <Button text="8" onAction="#pressKey8" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="numpad-btn"/>
+                <Button text="9" onAction="#pressKey9" GridPane.columnIndex="2" GridPane.rowIndex="2" styleClass="numpad-btn"/>
+
+                <Button text="0" onAction="#pressKey0" GridPane.columnIndex="0" GridPane.rowIndex="3" styleClass="numpad-btn"/>
+                <Button text="⌫" onAction="#pressBackspace" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="numpad-btn" style="-fx-background-color: #ffdad6;"/>
+                <Button text="C" onAction="#clearAll" GridPane.columnIndex="2" GridPane.rowIndex="3" styleClass="numpad-btn" style="-fx-background-color: #e0e4ed;"/>
+            </GridPane>
+
+            <TextField fx:id="hiddenCodeField" promptText=""
+                       style="-fx-opacity: 0; -fx-pref-width: 0; -fx-pref-height: 0; -fx-padding: 0; -fx-border-width: 0;"
+                       editable="true" focusTraversable="true"/>
+
+            <Label fx:id="mensajeLabel" textFill="red" wrapText="true" style="-fx-font-size: 16px; -fx-padding: 4px 0;"/>
+
+            <HBox spacing="24" alignment="CENTER" style="-fx-padding: 10px 0;">
                 <Button fx:id="btnCancelar" text="Cancelar" onAction="#handleCancel" styleClass="secondary-btn"
                         style="-fx-font-size: 20px; -fx-padding: 16px 56px;"/>
-                <Button fx:id="btnGenerarPrueba" text="Generar Prueba" onAction="#handleGenerarPrueba"
-                        style="-fx-background-color: #f59e0b; -fx-text-fill: white; -fx-background-radius: 30px; -fx-padding: 16px 56px; -fx-font-size: 20px; -fx-font-weight: bold; -fx-cursor: hand;"/>
                 <Button fx:id="btnVerificar" text="Verificar" onAction="#handleVerificar" styleClass="primary-btn"
                         style="-fx-font-size: 20px; -fx-padding: 16px 56px;"/>
             </HBox>

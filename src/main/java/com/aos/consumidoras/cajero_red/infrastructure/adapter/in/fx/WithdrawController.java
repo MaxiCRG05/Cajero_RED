@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
@@ -21,6 +22,7 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.ResourceAccessException;
 
 import java.math.BigDecimal;
+import java.util.function.UnaryOperator;
 
 @Component
 public class WithdrawController extends BaseController
@@ -33,7 +35,6 @@ public class WithdrawController extends BaseController
 
     @FXML private GridPane keypadGrid;
 
-    // ---- Teclado numérico ----
     @FXML private void pressKey1() { addDigit("1"); }
     @FXML private void pressKey2() { addDigit("2"); }
     @FXML private void pressKey3() { addDigit("3"); }
@@ -64,6 +65,15 @@ public class WithdrawController extends BaseController
         amountField.setText("$0");
         cargarSaldo();
         sideNavController.setActiveButtonById("withdrawButton");
+        UnaryOperator<TextFormatter.Change> amountFilter = change ->
+        {
+            String newText = change.getControlNewText();
+            if (newText.matches("\\$?\\d*\\.?\\d*"))
+                return change;
+            return null;
+        };
+        amountField.setTextFormatter(new TextFormatter<>(amountFilter));
+        amountField.setText("$0");
     }
 
     private void cargarSaldo()

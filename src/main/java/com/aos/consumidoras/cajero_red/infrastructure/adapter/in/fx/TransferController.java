@@ -39,24 +39,26 @@ public class TransferController extends BaseController
     public void initialize()
     {
         addSmoothScaleHover(cancelButton, confirmButton);
-        UnaryOperator<TextFormatter.Change> filter = change -> {
+
+        UnaryOperator<TextFormatter.Change> clabeFilter = change ->
+        {
             String newText = change.getControlNewText();
-            if (newText.isEmpty())
-                return null;
-
-            String textWithoutDollar = newText.startsWith("$") ? newText.substring(1) : newText;
-
-            if (!textWithoutDollar.matches("\\d*\\.?\\d*"))
-                return null;
-
-            if (!change.getControlNewText().startsWith("$")) {
-                change.setText("$" + change.getText());
-            }
-            return change;
+            if (newText.matches("\\d{0,18}"))
+                return change;
+            return null;
         };
+        clabeField.setTextFormatter(new TextFormatter<>(clabeFilter));
 
-        amountField.setTextFormatter(new TextFormatter<>(filter));
+        UnaryOperator<TextFormatter.Change> amountFilter = change ->
+        {
+            String newText = change.getControlNewText();
+            if (newText.matches("\\$?\\d*\\.?\\d*"))
+                return change;
+            return null;
+        };
+        amountField.setTextFormatter(new TextFormatter<>(amountFilter));
         amountField.setText("$0.00");
+
         sideNavController.setActiveButtonById("transferButton");
     }
 
@@ -70,14 +72,9 @@ public class TransferController extends BaseController
     private void handleConfirm()
     {
         String clabe = clabeField.getText();
-        if (clabe == null || clabe.trim().isEmpty())
-        {
-            showAlert("Error", "La CLABE destino es obligatoria.");
-            return;
-        }
         if (clabe.length() != 18)
         {
-            showAlert("Error", "La CLABE debe tener exactamente 18 dígitos.");
+            showAlert("Error", "La CLABE debe tener 18 dígitos.");
             return;
         }
         if (!clabe.matches("\\d{18}"))
@@ -131,17 +128,11 @@ public class TransferController extends BaseController
                     response.getSaldoOrigenNuevo().getMoneda());
             showAlert("Transferencia exitosa", mensaje);
             goToMainMenu();
-
         }
-        catch (HttpClientErrorException e)
+        catch (HttpClientErrorException | HttpServerErrorException e)
         {
             String mensaje = extraerMensajeError(e);
             showAlert("Error en la transferencia", mensaje);
-        }
-        catch (HttpServerErrorException e)
-        {
-            String mensaje = extraerMensajeError(e);
-            showAlert("Error del servidor", "Ocurrió un problema en el servidor. Por favor, intente más tarde.\n" + mensaje);
         }
         catch (ResourceAccessException e)
         {
